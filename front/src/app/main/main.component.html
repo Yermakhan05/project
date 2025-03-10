@@ -1,0 +1,139 @@
+<div class="main_page_img">
+  <img class="images" [src]="this.link_img" alt="main">
+  <div class="search-page">
+    <div class="search-page-inner">
+      <p class="quote">Delta tour Kazakhstan</p>
+    </div>
+  </div>
+  <div class="advantages">
+    <div class="why-us">
+      <div class="title_why_us">
+        <h2>{{ 'why_us.title' | translate }}</h2>
+        <p class="subtitle">{{ 'why_us.subtitle' | translate }}</p>
+      </div>
+      <div class="features">
+        <div class="feature">
+          <img src="assets/img_3.png" alt="Сопровождение" class="icon">
+          <h3>{{ 'why_us.features.support.title' | translate }}</h3>
+          <p class="feature_text">{{ 'why_us.features.support.description' | translate }}</p>
+        </div>
+        <div class="feature">
+          <img src="assets/img.png" alt="87% получили визы" class="icon">
+          <h3>{{ 'why_us.features.success_rate.title' | translate }}</h3>
+          <p class="feature_text">{{ 'why_us.features.success_rate.description' | translate }}</p>
+        </div>
+        <div class="feature">
+          <img src="assets/img_2.png" alt="Быстро" class="icon">
+          <h3>{{ 'why_us.features.fast.title' | translate }}</h3>
+          <p class="feature_text">{{ 'why_us.features.fast.description' | translate }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="about_agency">
+    <div class="visa-section">
+      <div class="images-container">
+        <img src="assets/WhatsApp%20Image%202025-02-25%20at%2013.25.17.jpeg" alt="Пагода" class="image image-left">
+        <img src="assets/WhatsApp%20Image%202025-02-25%20at%2013.25.16.jpeg" alt="Круизный лайнер" class="image image-center">
+        <video #videoElement class="image image-right" controls autoplay muted loop poster="assets/WhatsApp%20Image%202025-02-25%20at%2013.26.01.jpeg" playsinline preload="auto">
+          <source src="assets/WhatsApp%20Video%202025-02-25%20at%2013.25.13.mp4" type="video/mp4">
+          Ваш браузер не поддерживает видео.
+        </video>
+      </div>
+      <div class="text-container">
+        <h2>{{ 'about_agency.title' | translate }}</h2>
+        <p>{{ 'about_agency.description' | translate }}</p>
+        <p class="bold-text">{{ 'about_agency.bold_text' | translate }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="top_tours_section" id="topTours" #topTours>
+    <div class="top_tours">
+      <h2>{{ 'top_tours.title' | translate }}</h2>
+      <p class="subtitle_2">{{ 'top_tours.subtitle' | translate }}</p>
+    </div>
+    <div class="carousel-container">
+      <img src="assets/img_6.png" class="prev-btn" (click)="scrollLeft()">
+      <div class="light2"></div>
+      <div class="carousel-wrapper" #carousel>
+        <div class="carousel">
+          <div class="card-tour" *ngFor="let tour of Tours">
+            <div class="card">
+              <img [src]="tour.cover_image" alt="Monumen National" class="cover-image">
+              <div class="card-content">
+                <div class="title">{{ tour.title }}</div>
+                <div class="details_tour">
+                  <div class="location">
+                    <img src="assets/location.8d2d075.svg" alt="Location Icon">
+                    <span>Япония, Корея</span>
+                  </div>
+                  <div class="rating">
+                    <img src="assets/img_5.png" alt="Star">
+                    <img src="assets/img_5.png" alt="Star">
+                    <img src="assets/img_5.png" alt="Star">
+                    <img src="assets/img_5.png" alt="Star">
+                    <img src="assets/img_7.png" alt="Half Star">
+                    <span>4.8</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="light_tours"></div>
+      <img src="assets/img_6.png" class="next-btn" (click)="scrollRight()">
+    </div>
+    <div style="display: flex; justify-content: center; margin-top: 20px">
+      <button class="more_tour" routerLink="/tours">
+        {{ 'top_tours.button' | translate }}
+      </button>
+    </div>
+  </div>
+  <div class="reviews" #storyElement>
+    <div class="container_review">
+      <h2>{{ 'reviews.title' | translate }}</h2>
+      <h3>{{ 'reviews.subtitle' | translate }}</h3>
+      <div class="arrow-div">
+        <div style="display: flex">
+          <div class="arrow-tooltip">
+            {{ 'reviews.photo_report' | translate }}
+          </div>
+        </div>
+      </div>
+      <div class="testimonials">
+        <div class="testimonial-card" *ngFor="let review of reviews; let i = index">
+          <div class="testimonial-header">
+            <div class="story" (click)="openReview(i)">
+              <img [src]="review.image" alt="Review" />
+            </div>
+            <div>
+              <span class="user_name">{{review.name}}</span>
+            </div>
+          </div>
+          <p>
+            {{ review.reviewText | truncate:12 }}
+            <span *ngIf="review.reviewText.split(' ').length > 12" (click)="openFullText(review.reviewText)" class="more">Еще</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" *ngIf="selectedIndex !== null" (click)="closeReview()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <button class="arrow left" (click)="prevReview(); $event.stopPropagation()">
+        &#10094;
+      </button>
+      <img [src]="reviews[selectedIndex].image" alt="Review Screenshot" />
+      <button class="arrow right" (click)="nextReview(); $event.stopPropagation()">
+        &#10095;
+      </button>
+    </div>
+  </div>
+  <div *ngIf="isModalOpen" class="modal-overlay">
+    <div class="modal-2">
+      <span class="close-2" (click)="closeModal()">&times;</span>
+      <p>{{ fullText }}</p>
+    </div>
+  </div>
+</div>

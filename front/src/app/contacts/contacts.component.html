@@ -1,0 +1,39 @@
+<div class="contact-page">
+
+  <header class="header">
+    <h1 class="header-title">{{ 'contact.title' | translate }}</h1>
+  </header>
+
+  <section class="contact-section">
+    <div class="form-container">
+      <form class="contact-form">
+        <div class="form-row">
+          <input type="text" placeholder="{{ 'contact.form.name' | translate }}" class="input-field">
+          <input type="email" placeholder="{{ 'contact.form.email' | translate }}" class="input-field">
+        </div>
+        <input type="tel" placeholder="{{ 'contact.form.phone' | translate }}" class="input-field full-width">
+        <textarea placeholder="{{ 'contact.form.comment' | translate }}" class="input-field textarea-field"></textarea>
+        <button type="submit" class="submit-button">{{ 'contact.form.submit' | translate }}</button>
+      </form>
+
+      <div class="contact-info">
+        <div class="Footer_Item">
+          <img src="/assets/email.79f1928b.svg" alt="Email">
+          <p class="email">{{ 'contact.info.email' | translate }}</p>
+        </div>
+        <div class="Footer_Item">
+          <img src="/assets/phone.200fe855.svg" alt="Phone">
+          <p class="phone">{{ 'contact.info.phone' | translate }}</p>
+        </div>
+
+        <p class="social-text">{{ 'contact.info.social_text' | translate }}</p>
+        <div class="social-icons">
+          <a href="#" class="social-icon"><img src="assets/img_15.png"></a>
+          <a href="#" class="social-icon"><img src="assets/img_16.png"></a>
+          <a href="#" class="social-icon"><img src="assets/img_17.png"></a>
+          <a href="#" class="social-icon"><img style="margin-right: -1px; margin-bottom: 1px" src="assets/img_18.png"></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

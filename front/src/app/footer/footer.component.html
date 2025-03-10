@@ -1,0 +1,84 @@
+<div class="modal" *ngIf="isForm">
+  <div class="modal-content">
+    <button (click)="isForm = !isForm" class="close-btn">&times;</button>
+    <h2 class="modal-title">{{ 'APPLICATION_TITLE' | translate }}</h2>
+
+    <form class="tour-form">
+      <div class="form-group">
+        <input type="text" class="form-input" placeholder="{{ 'NAME_PLACEHOLDER' | translate }}" required>
+      </div>
+
+      <div class="form-group">
+        <input type="email" class="form-input" placeholder="{{ 'EMAIL_PLACEHOLDER' | translate }}">
+      </div>
+
+      <div class="form-group phone-group">
+        <div class="phone-input">
+          <span class="flag-icon">🇰🇿</span>
+          <span class="phone-prefix">+7</span>
+          <input type="tel" class="form-input phone-number" placeholder="{{ 'PHONE_PLACEHOLDER' | translate }}" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <textarea class="form-input textarea" placeholder="{{ 'COMMENT_PLACEHOLDER' | translate }}"></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">{{ 'SUBMIT_BUTTON' | translate }}</button>
+
+      <p class="consent-text">
+        {{ 'CONSENT_TEXT' | translate }} <a href="#">{{ 'CONSENT_LINK' | translate }}</a> {{ 'CONSENT_END' | translate }}.
+      </p>
+    </form>
+  </div>
+</div>
+<div class="Footer">
+  <img src="/assets/footer2.jpeg" alt="Footer Background" class="Footer_BG">
+
+  <div class="Footer_Overlay">
+    <div class="Footer_Container">
+      <div class="Footer_Top">
+        <img src="/assets/bf434a75-9664-4beb-a311-07c148af773e.png" alt="Logo" class="Footer_Logo">
+        <nav class="Footer_Nav">
+          <a class="Footer_Link" routerLink="/main">{{ 'HOME' | translate }}</a>
+          <a class="Footer_Link" (click)="navigateAndScroll('topTours')">{{ 'HOT_TOURS' | translate }}</a>
+          <a class="Footer_Link" routerLink="/tours">{{ 'TOURS' | translate }}</a>
+          <a class="Footer_Link" routerLink="/contacts">{{ 'CONTACTS' | translate }}</a>
+        </nav>
+      </div>
+      <div class="left_footer">
+        <div class="Footer_Social">
+          <a href="#" target="_blank" rel="noreferrer">
+            <img src="/assets/telegram.9e41b085.svg" alt="Telegram">
+          </a>
+          <a href="#" target="_blank" rel="noreferrer">
+            <img src="/assets/whatsapp.a4e76175.svg" alt="WhatsApp">
+          </a>
+          <a href="#" target="_blank" rel="noreferrer">
+            <img src="/assets/instagram.a1e35907.svg" alt="Instagram">
+          </a>
+        </div>
+
+        <div class="Footer_Info">
+          <div class="Footer_Item">
+            <img src="/assets/location.8d2d075d.svg" alt="Location">
+            <span>{{ 'LOCATION' | translate }}</span>
+          </div>
+          <div class="Footer_Item">
+            <img src="/assets/email.79f1928b.svg" alt="Email">
+            <a href="mailto:info@silktour.kz">k_yermakhan.kz</a>
+          </div>
+          <div class="Footer_Item">
+            <img src="/assets/phone.200fe855.svg" alt="Phone">
+            <a href="tel:+77012286030">+7 (701) 228 60 30</a>
+          </div>
+        </div>
+
+        <div (click)="isForm = !isForm">
+          <button class="Call_Button"> {{'BOOKING' | translate}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

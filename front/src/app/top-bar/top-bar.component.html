@@ -1,0 +1,102 @@
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div class="first-bar">
+      <div class="logo-container">
+        <img src="/assets/img_1.png" alt="">
+        <img src="/assets/menu.png" class="menu-button" alt="Menu" (click)="toggleMenu()">
+        <div class="nav-links" [ngClass]="{ 'active': isMenuOpen }">
+          <a routerLink="/main" class="nav-link" (click)="toggleMenu()">{{ 'HOME' | translate }}</a>
+          <a class="nav-link" (click)="navigateAndScroll('topTours')">{{ 'HOT_TOURS' | translate }}</a>
+          <a class="nav-link" routerLink="/tours" (click)="toggleMenu()">{{ 'TOURS' | translate }}</a>
+          <a class="nav-link" routerLink="/contacts" (click)="toggleMenu()">{{ 'CONTACTS' | translate }}</a>
+          <div class="nav-links-2" [ngClass]="{ 'active': isMenuOpen }">
+            <div class="language-switcher">
+              <select #langSelect (change)="changeLanguage(langSelect.value)" [value]="'ru'">
+                <option value="ru">🇷🇺</option>
+                <option value="en">🇬🇧</option>
+              </select>
+            </div>
+<!--            <a class="nav-link login-b" routerLink="/login" >{{ 'LOGIN' | translate }}</a>-->
+<!--            <a class="nav-link register-b" routerLink="/register">{{ 'REGISTER' | translate }}</a>-->
+            <a class="nav-link register-b" routerLink="/profile">{{ 'PROFILE' | translate }}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="second-bar" *ngIf="!isSecondBarPage()">
+      <div class="social-media">
+        <div [ngClass]="{ 'hidden-contacts': isContactPage() }" class="contacts">
+          <div class="social-icons">
+            <a href="#" target="_blank" rel="noreferrer">
+              <img src="/assets/telegram.9e41b085.svg" alt="">
+            </a>
+            <a href="#" target="_blank" rel="noreferrer">
+              <img src="/assets/whatsapp.a4e76175.svg" alt="">
+            </a>
+            <a href="#" target="_blank" rel="noreferrer">
+              <img src="/assets/instagram.a1e35907.svg" alt="">
+            </a>
+          </div>
+          <div class="contact-info">
+            <div class="cont">
+              <img src="/assets/phone.200fe855.svg" alt="">
+              <div class="location-input">
+                <div class="city"> +7 776 224 6936</div>
+              </div>
+            </div>
+            <div class="cont">
+              <img src="/assets/location.8d2d075d.svg" alt="">
+              <div class="location-input">
+                <div class="city">{{ 'LOCATION' | translate }}</div>
+              </div>
+            </div>
+            <div class="call-button" (click)="isForm = !isForm">
+              <div class="call-button-in">
+                <div style="margin-top: 7px;">
+                  {{'BOOKING' | translate}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-body" *ngIf="isForm">
+  <div class="modal">
+    <div class="modal-content">
+      <button (click)="isForm = !isForm" class="close-btn">&times;</button>
+      <h2 class="modal-title">{{ 'APPLICATION_TITLE' | translate }}</h2>
+
+      <form class="tour-form">
+        <div class="form-group">
+          <input type="text" class="form-input" placeholder="{{ 'NAME_PLACEHOLDER' | translate }}" required>
+        </div>
+
+        <div class="form-group">
+          <input type="email" class="form-input" placeholder="{{ 'EMAIL_PLACEHOLDER' | translate }}">
+        </div>
+
+        <div class="form-group phone-group">
+          <div class="phone-input">
+            <span class="flag-icon">🇰🇿</span>
+            <span class="phone-prefix">+7</span>
+            <input type="tel" class="form-input phone-number" placeholder="{{ 'PHONE_PLACEHOLDER' | translate }}" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <textarea class="form-input textarea" placeholder="{{ 'COMMENT_PLACEHOLDER' | translate }}"></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">{{ 'SUBMIT_BUTTON' | translate }}</button>
+
+        <p class="consent-text">
+          {{ 'CONSENT_TEXT' | translate }} <a href="#">{{ 'CONSENT_LINK' | translate }}</a> {{ 'CONSENT_END' | translate }}
+        </p>
+      </form>
+    </div>
+  </div>
+</div>

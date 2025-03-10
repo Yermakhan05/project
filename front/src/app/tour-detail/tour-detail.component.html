@@ -1,0 +1,199 @@
+<div>
+  <div class="images-tour">
+    <section class="gallery">
+      <div class="gallery-main">
+        <img src="assets/tour2.jpeg" alt="{{ 'gallery.main' | translate }}">
+      </div>
+      <div class="gallery-side">
+        <div class="gallery-item">
+          <img src="assets/img_12.png" alt="{{ 'gallery.entrance' | translate }}">
+        </div>
+        <div class="gallery-item">
+          <img src="assets/img_13.png" alt="{{ 'gallery.panda_temple' | translate }}">
+        </div>
+      </div>
+    </section>
+
+    <nav class="menu">
+      <ul>
+        <li><a (click)="scrollTo('tourCard')" [ngClass]="{'active': selectedSection === 'tourCard'}">{{ 'menu.description' | translate }}</a></li>
+        <li><a (click)="scrollTo('about')" [ngClass]="{'active': selectedSection === 'about'}">{{ 'menu.about' | translate }}</a></li>
+        <li><a (click)="scrollTo('information')" [ngClass]="{'active': selectedSection === 'information'}">{{ 'menu.information' | translate }}</a></li>
+        <li><a (click)="scrollTo('location')" [ngClass]="{'active': selectedSection === 'location'}">{{ 'menu.location' | translate }}</a></li>
+        <li><a (click)="scrollTo('reviews')" [ngClass]="{'active': selectedSection === 'reviews'}">{{ 'menu.reviews' | translate }}</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div *ngIf="!isReviewBody">
+    <div #tourCard id="tourCard" class="card">
+      <div class="description-container">
+        <h2 class="title">{{ 'tour.title' | translate }}</h2>
+
+        <div class="rating">
+          <span class="stars">⭐⭐⭐⭐⭐</span>
+          <span class="rating-text">{{ 'tour.rating' | translate: {rating: '4.4', reviews: '9RB+'} }}</span>
+        </div>
+
+        <div class="info">
+          <span class="icon">📍</span>
+          <span class="info-text">{{ 'tour.address' | translate }}</span>
+        </div>
+
+        <div class="info">
+          <span class="icon">⏰</span>
+          <span class="info-text">{{ 'tour.open_hours' | translate }}</span>
+        </div>
+
+        <p class="description">{{ 'tour.description' | translate }} <span class="read-more">{{ 'tour.read_more' | translate }}</span></p>
+      </div>
+      <div class="price-section">
+        <div class="price-text">
+          <span class="price-label">{{ 'price.start_from' | translate }}</span>
+          <span class="price">{{ 'price.amount' | translate }}</span>
+        </div>
+        <button class="ticket-button">{{ 'price.see_ticket' | translate }}</button>
+      </div>
+    </div>
+    <div #about id="about" class="about_tour">
+      <div class="about-container">
+        <h3 class="title-about">{{ 'about.title' | translate }}</h3>
+        <p class="description-about">{{ 'about.ticket_prices' | translate }}<br>{{ 'about.starting_price' | translate }}<br>{{ 'about.rides' | translate }}<br>{{ 'about.ride_list' | translate }}</p>
+      </div>
+    </div>
+    <div #information id="information" class="information">
+      <section class="info-box">
+        <div class="section">
+          <h2 class="section-title">{{ 'information.important' | translate }}</h2>
+          <ul class="section-list">
+            <li *ngFor="let rule of ('information.rules' | translate)">{{ rule }}</li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">{{ 'information.highlights' | translate }}</h2>
+          <ul class="section-list">
+            <li *ngFor="let rule of ('information.highlight_list' | translate)">{{ rule }}</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <div #location id="location" class="location-tour">
+      <h2 class="location-title">{{ 'location.title' | translate }}</h2>
+      <section class="location-section">
+        <div class="map-container">
+          <div class="location-info">
+            <p class="location-address">
+              <span class="location-icon">📍</span>
+              {{ 'location.address' | translate }}
+            </p>
+            <div class="map-links">
+              <a href="https://www.google.com/maps?q=Jl.+Kapten+Harun+Kabir,+Cibereum"
+                 target="_blank" class="map-link">
+                <img src="assets/google-map.png" alt="Google Maps"> {{ 'location.maps.google' | translate }}
+              </a>
+              <a href="https://maps.apple.com/?q=Jl.+Kapten+Harun+Kabir,+Cibereum"
+                 target="_blank" class="map-link">
+                <img src="assets/apple-map.png" alt="Apple Maps"> {{ 'location.maps.apple' | translate }}
+              </a>
+            </div>
+          </div>
+          <img src="assets/map-placeholder.jpg" alt="{{ 'location.map' | translate }}" class="map-image">
+        </div>
+      </section>
+    </div>
+  </div>
+  <div *ngIf="isReviewBody" #reviews id="reviews" class="review-body">
+    <div class="review-head">
+      <div style="margin-bottom: 10px">
+        <span>{{ 'reviews_tour.share_experience' | translate }}</span>
+      </div>
+      <div class="rating-stars">
+        <input type="radio" id="star5" name="rating" value="5" (click)="openReviewForm(5)">
+        <label for="star5">&#9733;</label>
+
+        <input type="radio" id="star4" name="rating" value="4" (click)="openReviewForm(4)">
+        <label for="star4">&#9733;</label>
+
+        <input type="radio" id="star3" name="rating" value="3" (click)="openReviewForm(3)">
+        <label for="star3">&#9733;</label>
+
+        <input type="radio" id="star2" name="rating" value="2" (click)="openReviewForm(2)">
+        <label for="star2">&#9733;</label>
+
+        <input type="radio" id="star1" name="rating" value="1" (click)="openReviewForm(1)">
+        <label for="star1">&#9733;</label>
+      </div>
+    </div>
+
+    <div class="review-form" *ngIf="isModalFormReview">
+      <div class="review-div">
+        <div class="review-text-section">
+          <label for="review-text">Отзыв (Вы оценили {{selectedRating}}/5)</label>
+          <textarea id="review-text" placeholder="Поделитесь своим впечатлением"></textarea>
+        </div>
+
+        <div class="review-info">
+          <div class="review-confirmation">
+            <input type="checkbox" id="confirm" checked disabled>
+            <label for="confirm">Оценка принята. Кажется, вы в восторге! Поделитесь, что именно понравилось?</label>
+          </div>
+        </div>
+
+        <div class="photo-upload">
+          <div class="photo-box">
+            <span class="photo-icon">+</span>
+            <p>Добавьте фотографии</p>
+            <small>{{ 'reviews_tour.add_photos' | translate }}</small>
+          </div>
+        </div>
+
+        <p class="review-rules">
+          {{ 'reviews_tour.review_policy' | translate }} <a href="#">правилами публикации отзывов</a>.
+        </p>
+
+        <div class="review-footer">
+          <div class="user-info">
+            <div class="user-avatar">KE</div>
+            <span class="user-name">Kasymzhomart Ermahan</span>
+          </div>
+          <div class="review-buttons">
+            <button class="btn cancel" (click)="isModalFormReview = false">{{ 'reviews_tour.cancel' | translate }}</button>
+            <button class="btn submit">{{ 'reviews_tour.submit' | translate }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-container">
+      <div class="review-header">
+        <div class="profile">
+          <div class="avatar">A.T</div>
+          <div class="user-info">
+            <h3 class="user-name">Ali Tufan</h3>
+          </div>
+        </div>
+        <span class="review-date">April 2023</span>
+      </div>
+
+      <div class="review-content">
+        <h2 class="review-title">Take this tour! It's fantastic!</h2>
+        <p class="review-text">
+          Great for 4-5 hours to explore. Really a lot to see and tons of photo spots.
+          Even have a passport for you to collect all the stamps as a souvenir.
+          Must see for a Harry Potter fan.
+        </p>
+      </div>
+
+      <div class="review-images">
+        <img src="assets/slide1.jpg" alt="Review Image 1">
+        <img src="assets/slide2.jpg" alt="Review Image 2">
+        <img src="assets/slide3.jpg" alt="Review Image 3">
+      </div>
+
+      <div class="review-feedback">
+        <span>Helpful</span>
+        <span>Not helpful</span>
+      </div>
+    </div>
+  </div>
+</div>

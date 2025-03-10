@@ -1,0 +1,32 @@
+<body>
+
+<div class="profile-container">
+  <div class="cover-photo">
+    <button class="upload-cover-btn">
+      <img src="assets/apple-camera.png">
+      <span>{{ 'UPLOAD_COVER_PHOTO' | translate }}</span>
+    </button>
+  </div>
+
+  <div class="profile-info">
+    <img src="assets/profile.avif" alt="Profile Picture" class="profile-pic">
+    <div class="details">
+      <h2>Yermakhan Kassymzhomart <span class="edit-icon">✏️</span></h2>
+      <p class="location">{{ 'LOCATION_PROFILE' | translate }}</p>
+      <p class="points">{{ 'POINTS' | translate }} <span class="info-icon">{{ 'INFO' | translate }}</span></p>
+    </div>
+  </div>
+
+  <div class="navigation">
+    <button class="nav-item">{{ 'REVIEW' | translate }}</button>
+    <button class="nav-item">{{ 'BOOKING_HISTORY' | translate }}</button>
+    <button class="nav-item">{{ 'NEW_BOOKINGS' | translate }}</button>
+    <button class="nav-item active">{{ 'MY_FAVOURITES' | translate }}</button>
+    <button class="nav-item">{{ 'ACCOUNT_SETTINGS' | translate }}</button>
+  </div>
+
+  <div style="display: flex; justify-content: center; align-items: center; height: 500px">
+    <h1>{{ 'LIST_EMPTY' | translate }}</h1>
+  </div>
+</div>
+</body>

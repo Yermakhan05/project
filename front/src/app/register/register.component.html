@@ -1,0 +1,106 @@
+<div class='Main_Container' *ngIf="!isLoginPage()">
+  <div class="Container">
+    <div class='Left_side_8Column' style="margin-top: 20px">
+      <div class="Login_Form">
+
+        <div class="Info">
+          <h1 class='h1-Info'>{{ 'REGISTRATION_USER' | translate }}</h1>
+          <p class='p-Info'>{{ 'DISCOVER_WORLD' | translate }}</p>
+        </div>
+
+        <div class="Form">
+          <div class="Input-Container">
+            <p class="Input-p">{{ 'EMAIL' | translate }}</p>
+            <input type="email" class="Input-input">
+          </div>
+          <div class="Input-Container">
+            <p class="Input-p">{{ 'ENTER_PASSWORD' | translate }}</p>
+            <input class='Input-input'>
+          </div>
+          <div class="Input-Container">
+            <p class="Input-p">{{ 'CONFIRM_PASSWORD' | translate }}</p>
+            <input class='Input-input'>
+          </div>
+          <div class="ForgotPassword"></div>
+          <div class="buttons">
+            <button class="MainButton-a">{{ 'REGISTER' | translate }}</button>
+            <div class="Social_Sign_In-Or">
+              <div class="line-a"></div>
+              <p class='line-p'>{{ 'OR' | translate }}</p>
+              <div class="line-b"></div>
+            </div>
+            <div class="SocialButton-a">
+              <div class="social-img"></div>
+              <p>{{ 'GOOGLE' | translate }}</p>
+            </div>
+          </div>
+        </div>
+        <div class='Register_Form'>
+          <p class='Register_Form-p-1'>{{ 'HAVE_ACCOUNT' | translate }}</p>
+          <p class='Register_Form-p-2' routerLink="/login">{{ 'GO_BACK' | translate }}</p>
+        </div>
+        <div class='CompanyName-div'>
+          <p class='CompanyName-p'>{{ 'DELTA_TOUR' | translate }}</p>
+        </div>
+      </div>
+    </div>
+    <div class='Art'>
+      <div class="Art_Container">
+        <p class='p-Art'>{{ 'BOOK_TRIP' | translate }}</p>
+        <div class='p-Art'></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="isLoginPage()">
+  <div class='Main_Container'>
+    <div class="Container">
+      <div class='Left_side_8Column'>
+        <div class="Login_Form">
+          <div class="Info">
+            <h1 class='h1-Info'>{{ 'WELCOME' | translate }}</h1>
+            <p class='p-Info'>{{ 'BOOK_MORE_TOURS' | translate }}</p>
+          </div>
+
+          <div class="Form">
+            <div class="Input-Container">
+              <p class="Input-p">{{ 'EMAIL' | translate }}</p>
+              <input type="email" class="Input-input" placeholder="">
+            </div>
+            <div class="Input-Container">
+              <p class="Input-p">{{ 'ENTER_PASSWORD' | translate }}</p>
+              <input class='Input-input'>
+            </div>
+            <p class="ForgotPassword">{{ 'FORGOT_PASSWORD' | translate }}</p>
+            <button class="MainButton-a">{{ 'LOGIN_USER' | translate }}</button>
+            <div class="Social_Sign_In-Or">
+              <div class="line-a"></div>
+              <p class='line-p'>{{ 'OR' | translate }}</p>
+              <div class="line-b"></div>
+            </div>
+            <div class="SocialButton-a">
+              <div class="social-img"></div>
+              <p>{{ 'GOOGLE' | translate }}</p>
+            </div>
+          </div>
+
+          <div class='Register_Form'>
+            <p class='Register_Form-p-1'>{{ 'NO_ACCOUNT' | translate }}</p>
+            <p class='Register_Form-p-2' routerLink="/register">{{ 'SIGN_UP' | translate }}</p>
+          </div>
+
+          <div class='CompanyName-div'>
+            <p class='CompanyName-p'>{{ 'DELTA_TOUR' | translate }}</p>
+          </div>
+        </div>
+      </div>
+      <div class='Art'>
+        <div class="Art_Container">
+          <p class='p-Art'>{{ 'BOOK_TRIP' | translate }}</p>
+          <div class='p-Art'></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

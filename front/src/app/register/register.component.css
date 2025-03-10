@@ -1,0 +1,242 @@
+body{
+  margin: 0;
+}
+.Main_Container{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.Container{
+  width: 85%;
+  margin: 0 auto;
+  height: 88%;
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+.Art{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+}
+
+.Art_Container{
+  background: url('../../assets/last-image.jpg') center;
+  width: 100%;
+  height: 90%;
+  position: relative;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.p-Art{
+  position: absolute;
+  width: 55%;
+  margin: 0 auto;
+  text-align: center;
+  color: white;
+  font-weight: 650;
+  font-size: 17px;
+}
+
+.Left_side_8Column{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 0 0 0;
+}
+.Login_Form{
+  width: 80%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.Info{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 10px;
+}
+.h1-Info{
+  font-weight: 600;
+  text-align: start;
+  font-size: 34px;
+}
+.p-Info{
+  text-align: start;
+  font-size: 18px;
+  padding-top: 10px;
+}
+.buttons{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.Form{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* margin-bottom: 10px; */
+}
+.Input-Container{
+  padding-bottom: 5px;
+}
+.Input-p{
+  text-align: start;
+  color: #212121;
+}
+.Input-input{
+  width: 92%;
+  height: 48px;
+  padding: 0 24px;
+  border: 1px solid #6D6523;
+  background-color: #F7FBFF;
+  border-radius: 12px;
+  transition: all 0.3s ease-in-out;
+}
+.Input-input:hover{
+  border: 1px solid #6D6523;;
+  background-color: #ffffff;
+}
+
+.ForgotPassword{
+  width: 100%;
+  text-align: end;
+  color: #6D6523;
+  padding: 10px 0;
+}
+
+.MainButton-a{
+  width: 90%;
+  margin: 30px auto;
+  height: 48px;
+  background-color: #6D6523;
+  color: #ffffff;
+  transition: all 0.4s;
+  border-radius: 12px;
+  border: none;
+  font-weight: 400;
+  font-size: 16px;
+  cursor: pointer;
+}
+.MainButton-a:hover{
+  background-color: #524b15;
+}
+
+
+.Social_Sign_In-Or{
+  display: flex;
+  justify-content: space-between;
+  /* margin-bottom: 10px; */
+}
+.line-a {
+  display: flex;
+  width: 100%;
+  height: 1px;
+  background-color: #CFDFE2;
+  margin: 10px 10px 10px 0;
+}
+.line-b {
+  display: flex;
+  width: 100%;
+  height: 1px;
+  background-color: #CFDFE2;
+  margin: 10px 0 10px 10px;
+}
+
+.line-p{
+  align-items: center;
+  line-height: 16px;
+  letter-spacing: 1px;
+}
+
+
+.SocialButton-a{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background-color: #F3F9FA;
+  color: #424242;
+  transition: all 0.4s;
+  border-radius: 12px;
+  font-weight: 400;
+  cursor: pointer;
+  margin: 20px 0;
+}
+.social-img {
+  background-image: url('../../assets/google.png');
+  position: relative;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 32px;
+  height: 26px;
+  padding-top: 16px;
+  margin-right: 10px;
+}
+
+.Register_Form{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 5px 0 20px 0;
+}
+.Register_Form-p-2{
+  color: #6D6523;
+}
+.Register_Form-p-2:hover{
+  color: #574f0e;
+  cursor: pointer;
+}
+
+.CompanyName-div{
+  display: flex;
+  justify-content: center;
+  place-items: flex-end;
+}
+.CompanyName-p{
+  font-family: Roboto, serif;
+  letter-spacing: 1px;
+  color: #959CB6;
+}
+
+
+
+
+@media (max-width:1050px) {
+  .Art{padding: 26px 24px;}
+}
+
+@media (max-width:864px) {
+  .Container{width: 85%; grid-template-columns: none; grid-template-rows: 30% 70%; height: 100%}
+
+  .Art{order: -1; height: 100%; width: 100%; padding: 0; margin: 0}
+}
+
+
+@media (max-width:650px) {
+  .Container{
+    margin: 40px 0;
+  }
+  .h1-Info,.p-Info{text-align: start;}
+}
+@media (max-width:400px) {
+  .h1-Info{font-size: 26px;}
+  .Container{
+    width: 95%;
+  }
+}
+
+

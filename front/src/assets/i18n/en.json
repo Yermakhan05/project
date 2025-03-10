@@ -1,0 +1,181 @@
+{
+  "HOME": "Home",
+  "HOT_TOURS": "Hot Tours",
+  "TOURS": "Tours by DeltaTours",
+  "CONTACTS": "Contacts",
+  "LOGIN": "Login",
+  "REGISTER": "Register",
+  "PROFILE": "Profile",
+  "LOCATION": "Almaty",
+  "BOOKING": "Booking a call",
+  "main_page": {
+    "title": "Delta tour Kazakhstan"
+  },
+  "why_us": {
+    "title": "Why Us?",
+    "subtitle": "These popular destinations have something to offer",
+    "features": {
+      "support": {
+        "title": "Full Support",
+        "description": "Our staff will assist you at any stage of the visa process: from consultation on visa type selection and document collection to filling out immigration forms."
+      },
+      "success_rate": {
+        "title": "87% of Clients Got Their Visas",
+        "description": "Thanks to the high-quality work of our staff, most clients successfully obtain their visas. We strive to help every applicant."
+      },
+      "fast": {
+        "title": "We Process Fast",
+        "description": "No matter the purpose of your trip—tourism, study, or business—we will process your application quickly and efficiently."
+      }
+    }
+  },
+  "about_agency": {
+    "title": "Over 800 Visas Processed",
+    "description": "Every day, people with different purposes—tourism, education, work—come to us for high-quality visa processing.",
+    "bold_text": "We will help you find your ideal vacation destination."
+  },
+  "top_tours": {
+    "title": "Top Destinations",
+    "subtitle": "Choose your best destination",
+    "button": "Load More"
+  },
+  "reviews": {
+    "photo_report": "↓ you can view the photo reports here",
+    "title": "Testimonials",
+    "subtitle": "What They Say About Us",
+    "sample_review": "\"Our vacation in Indonesia was truly amazing! Thank you for the unforgettable moments!\""
+  },
+  "contact": {
+    "title": "Contacts",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "comment": "Comment",
+      "submit": "Submit"
+    },
+    "info": {
+      "email": "traveltrialgmail.com",
+      "phone": "+7 776 224 69 36",
+      "social_text": "Social networks:"
+    }
+  },
+  "tours": {
+    "search_placeholder": "Go to mountain, ocean, attractions",
+    "search_btn": "Search",
+    "filters": {
+      "location": "Country",
+      "city": "City",
+      "durations": "Durations",
+      "price": "Average Price"
+    },
+    "locations": ["Spain", "Kazakhstan", "Korea", "Japan"],
+    "cities": ["Surabaya", "Jakarta", "Bali", "Bandung"],
+    "durations": ["1 - 6 days", "1 - 2 weeks", "2 - 3 weeks", "1.. month"],
+    "prices": ["100.000 - 300.000 ₸", "300.000 - 500.000 ₸", "500.000 - 1.000.000₸"],
+    "account_prompt": {
+      "title": "Do you have an account yet?",
+      "description": "Come on, create an account or log in. There are discounts and benefits so you can make more money!",
+      "login": "Login"
+    },
+    "top_tours": "Top Tours",
+    "more_tours": "Load more",
+    "booking": "Booking",
+    "price_per_day": "₸/ 5 days"
+  },
+  "menu": {
+    "description": "Description",
+    "about": "About",
+    "information": "Information",
+    "location": "Location",
+    "reviews": "Reviews"
+  },
+  "tour": {
+    "title": "The Mysterious East",
+    "rating": "4.4 (Read 9K+ reviews & photos)",
+    "address": "Jl. Kapten Harun Kabir, Cibeureum, Bogor Regency, West Java, Indonesia",
+    "open_hours": "Open • Saturday • 08:30 - 17:00",
+    "description": "Bogor Safari Park is a children's tourist destination that is suitable for playing while learning. Here, you and your little ones will see amazing animals, such as orangutans or white tigers up close. No need to worry, your interactions with wild and rare animals at Safari Park are guaranteed to be safe!",
+    "read_more": "Read more..."
+  },
+  "price": {
+    "start_from": "Start from",
+    "amount": "₸ 115.000/person",
+    "see_ticket": "See Ticket"
+  },
+  "about": {
+    "title": "About Bogor Indonesian Safari Park",
+    "ticket_prices": "🎟️ Ticket Prices",
+    "starting_price": "Starting from RP. 115.000",
+    "rides": "🎢 Rides",
+    "ride_list": "Safari Journey, Panda Palace, Night Safari, Safari Track & Outbound, Baby Zoo, Safari Waterpark, Komodo Dragon Island, Bird Dome, Animal Edutainment Show."
+  },
+  "information": {
+    "important": "Important Information",
+    "rules": [
+      "It is prohibited to bring pets into the Bogor Safari Park area.",
+      "For foreigners, they are required to show an identity card in the form of a KITAS or domestic entry permit."
+    ],
+    "highlights": "Highlights",
+    "highlight_list": [
+      "Take your car or take the Safari Park bus to see the animals roaming around in their natural habitat.",
+      "With a collection of more than 3,000 animals from 300 different species, check the package details, choose your tickets, and make your adventure here unforgettable!",
+      "Don't miss this rare opportunity to interact and feed them.",
+      "Suitable for: Fun Families and Fun Gangs."
+    ]
+  },
+  "location": {
+    "title": "Location",
+    "address": "Jl. Kapten Harun Kabir, Cibeureum, Bogor Regency, West Java, Indonesia",
+    "maps": {
+      "google": "Google Maps",
+      "apple": "Apple Maps"
+    }
+  },
+  "reviews_tour": {
+    "share_experience": "Share your experience",
+    "leave_review": "Leave a review",
+    "add_photos": "Add photos (up to 10 images)",
+    "review_policy": "By submitting a review, you confirm that you have read and agree to the review publication rules.",
+    "cancel": "Cancel",
+    "submit": "Submit"
+  },
+  "APPLICATION_TITLE": "Tour Selection Application",
+  "NAME_PLACEHOLDER": "Your name *",
+  "EMAIL_PLACEHOLDER": "Email",
+  "PHONE_PLACEHOLDER": "(000) 000-0000",
+  "COMMENT_PLACEHOLDER": "Comment",
+  "SUBMIT_BUTTON": "Submit",
+  "CONSENT_TEXT": "By submitting the request, you confirm your",
+  "CONSENT_LINK": "consent",
+  "CONSENT_END": "to the processing of personal data.",
+
+  "REGISTRATION": "Registration",
+  "WELCOME": "Welcome! 👋",
+  "DISCOVER_WORLD": "Discover the world with DeltaTour!",
+  "BOOK_MORE_TOURS": "Book more tours with DeltaTour!",
+  "EMAIL": "Email",
+  "ENTER_PASSWORD": "Enter password",
+  "CONFIRM_PASSWORD": "Confirm password",
+  "FORGOT_PASSWORD": "Forgot password?",
+  "REGISTRATION_USER": "Register",
+  "LOGIN_USER": "Login",
+  "OR": "or",
+  "GOOGLE": "Google",
+  "HAVE_ACCOUNT": "Have an account?",
+  "NO_ACCOUNT": "No account?",
+  "GO_BACK": "Go back then",
+  "SIGN_UP": "Sign up",
+  "BOOK_TRIP": "Book an unforgettable trip in just a few clicks. Choose the best tours, enjoy comfort, and leave the organization to us!",
+  "DELTA_TOUR": "DeltaTour",
+  "UPLOAD_COVER_PHOTO": "Upload Cover Photo",
+  "LOCATION_PROFILE": "🇰🇿 Almaty, Kazakhstan",
+  "POINTS": "🏅 5 Countries",
+  "INFO": "ℹ️",
+  "REVIEW": "Review",
+  "BOOKING_HISTORY": "Booking History (2)",
+  "NEW_BOOKINGS": "New Bookings (1)",
+  "MY_FAVOURITES": "My Favourites (7)",
+  "ACCOUNT_SETTINGS": "Account Settings",
+  "LIST_EMPTY": "List is empty"
+}
