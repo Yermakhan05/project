@@ -10,7 +10,7 @@ export class TourService {
   BASE_URL = 'http://127.0.0.1:8000'
   constructor(private client: HttpClient) {
   }
-  getList(): Observable<TourApiResponse>{
-    return this.client.get<TourApiResponse>(`${this.BASE_URL}/api/tours`)
+  getList(params: any = {}): Observable<TourApiResponse>{
+    return this.client.get<TourApiResponse>(`${this.BASE_URL}/api/tours/`, { params })
   }
 }

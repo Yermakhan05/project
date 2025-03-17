@@ -11,14 +11,14 @@
           <a class="nav-link" routerLink="/contacts" (click)="toggleMenu()">{{ 'CONTACTS' | translate }}</a>
           <div class="nav-links-2" [ngClass]="{ 'active': isMenuOpen }">
             <div class="language-switcher">
-              <select #langSelect (change)="changeLanguage(langSelect.value)" [value]="'ru'">
+              <select #langSelect (change)="changeLanguage(langSelect.value)" [value]="currentLanguage">
                 <option value="ru">🇷🇺</option>
                 <option value="en">🇬🇧</option>
               </select>
             </div>
-<!--            <a class="nav-link login-b" routerLink="/login" >{{ 'LOGIN' | translate }}</a>-->
-<!--            <a class="nav-link register-b" routerLink="/register">{{ 'REGISTER' | translate }}</a>-->
-            <a class="nav-link register-b" routerLink="/profile">{{ 'PROFILE' | translate }}</a>
+            <a *ngIf="isAuth" class="nav-link login-b" routerLink="/login">{{ 'LOGIN' | translate }}</a>
+            <a *ngIf="isAuth" class="nav-link register-b" routerLink="/register">{{ 'REGISTER' | translate }}</a>
+            <a *ngIf="!isAuth" class="nav-link register-b" routerLink="/profile">{{ 'PROFILE' | translate }}</a>
           </div>
         </div>
       </div>
@@ -70,32 +70,33 @@
       <button (click)="isForm = !isForm" class="close-btn">&times;</button>
       <h2 class="modal-title">{{ 'APPLICATION_TITLE' | translate }}</h2>
 
-      <form class="tour-form">
+      <form class="tour-form" #formRef="ngForm" (ngSubmit)="submitForm(formRef)">
         <div class="form-group">
-          <input type="text" class="form-input" placeholder="{{ 'NAME_PLACEHOLDER' | translate }}" required>
+          <input type="text" class="form-input" placeholder="{{ 'NAME_PLACEHOLDER' | translate }}" [(ngModel)]="name" name="name" #nameRef="ngModel" required>
+          <span *ngIf="nameRef.invalid && nameRef.touched" class="error-text">Имя обязательно!</span>
         </div>
 
         <div class="form-group">
-          <input type="email" class="form-input" placeholder="{{ 'EMAIL_PLACEHOLDER' | translate }}">
+          <input type="email" class="form-input" placeholder="{{ 'EMAIL_PLACEHOLDER' | translate }}" [(ngModel)]="email" name="email" #emailRef="ngModel" required email>
+          <span *ngIf="emailRef.invalid && emailRef.touched" class="error-text">Введите корректный email!</span>
         </div>
 
         <div class="form-group phone-group">
           <div class="phone-input">
             <span class="flag-icon">🇰🇿</span>
             <span class="phone-prefix">+7</span>
-            <input type="tel" class="form-input phone-number" placeholder="{{ 'PHONE_PLACEHOLDER' | translate }}" required>
+            <input type="tel" class="form-input phone-number" placeholder="{{ 'PHONE_PLACEHOLDER' | translate }}" [(ngModel)]="phone" name="phone" #phoneRef="ngModel" required>
+            <span *ngIf="phoneRef.invalid && phoneRef.touched" class="error-text">Телефон обязателен!</span>
           </div>
         </div>
 
         <div class="form-group">
-          <textarea class="form-input textarea" placeholder="{{ 'COMMENT_PLACEHOLDER' | translate }}"></textarea>
+          <textarea class="form-input textarea" placeholder="{{ 'COMMENT_PLACEHOLDER' | translate }}" [(ngModel)]="comment" name="comment"></textarea>
         </div>
 
-        <button type="submit" class="submit-btn">{{ 'SUBMIT_BUTTON' | translate }}</button>
-
-        <p class="consent-text">
-          {{ 'CONSENT_TEXT' | translate }} <a href="#">{{ 'CONSENT_LINK' | translate }}</a> {{ 'CONSENT_END' | translate }}
-        </p>
+        <button type="submit" class="submit-btn" [disabled]="formRef.invalid">
+          {{ 'SUBMIT_BUTTON' | translate }}
+        </button>
       </form>
     </div>
   </div>

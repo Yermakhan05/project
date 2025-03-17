@@ -2,50 +2,51 @@
   <div class="search-body">
     <div class="search-container">
       <div class="search-bar">
-        <input type="text" placeholder="{{ 'tours.search_placeholder' | translate }}">
-        <button class="search-btn">🔍 {{ 'tours.search_btn' | translate }}</button>
+        <input type="text" placeholder="{{ 'tours.search_placeholder' | translate }}" [(ngModel)]="searchInput">
+        <button class="search-btn" (click)="searchTour()">🔍 {{ 'tours.search_btn' | translate }}</button>
       </div>
       <div class="filters">
-        <div class="filter">
+        <div class="filter" (click)="toggleDropdown()">
           <button class="dropdown-btn">{{ 'tours.filters.location' | translate }} ▼</button>
-          <p class="selected-value">{{ 'tours.locations.0' | translate }}</p>
-          <ul class="dropdown-menu">
-            <li>{{ 'tours.locations.0' | translate }}</li>
-            <li>{{ 'tours.locations.1' | translate }}</li>
-            <li>{{ 'tours.locations.2' | translate }}</li>
-            <li>{{ 'tours.locations.3' | translate }}</li>
+          <p class="selected-value">{{ 'tours.locations.' + selectedContinentId | translate }}</p>
+          <ul class="dropdown-menu" *ngIf="!dropdownOpen">
+            <li *ngFor="let continent of ['AL', 'AF', 'AS', 'EU', 'NA', 'SA', 'OC', 'AN']; let i = index"
+                (click)="filterByContinent(continent, i)">
+              {{ 'tours.locations.' + (i) | translate }}
+            </li>
           </ul>
         </div>
 
         <div class="filter">
           <button class="dropdown-btn">{{ 'tours.filters.city' | translate }} ▼</button>
-          <p class="selected-value">{{ 'tours.cities.0' | translate }}</p>
+          <p class="selected-value">{{ selectedCountry }}</p>
           <ul class="dropdown-menu">
-            <li>{{ 'tours.cities.0' | translate }}</li>
-            <li>{{ 'tours.cities.1' | translate }}</li>
-            <li>{{ 'tours.cities.2' | translate }}</li>
-            <li>{{ 'tours.cities.3' | translate }}</li>
+            <li *ngFor="let country of countries" (click)="filterByCountry(country.id)">
+              {{ country.name }}
+            </li>
           </ul>
         </div>
 
+
         <div class="filter">
           <button class="dropdown-btn">{{ 'tours.filters.durations' | translate }} ▼</button>
-          <p class="selected-value">{{ 'tours.durations.0' | translate }}</p>
+          <p class="selected-value">{{ selectedDuration }}день</p>
           <ul class="dropdown-menu">
-            <li>{{ 'tours.durations.0' | translate }}</li>
-            <li>{{ 'tours.durations.1' | translate }}</li>
-            <li>{{ 'tours.durations.2' | translate }}</li>
-            <li>{{ 'tours.durations.3' | translate }}</li>
+            <li (click)="filterByDuration('1-6')">{{ 'tours.durations.0' | translate }}</li>
+            <li (click)="filterByDuration('7-14')">{{ 'tours.durations.1' | translate }}</li>
+            <li (click)="filterByDuration('15-29')">{{ 'tours.durations.2' | translate }}</li>
+            <li (click)="filterByDuration('30-')">{{ 'tours.durations.3' | translate }}</li>
           </ul>
         </div>
 
         <div class="filter">
           <button class="dropdown-btn">{{ 'tours.filters.price' | translate }} ▼</button>
-          <p class="selected-value">{{ 'tours.prices.1' | translate }}</p>
+          <p class="selected-value">{{ selectedPrice }}₸</p>
           <ul class="dropdown-menu">
-            <li>{{ 'tours.prices.0' | translate }}</li>
-            <li>{{ 'tours.prices.1' | translate }}</li>
-            <li>{{ 'tours.prices.2' | translate }}</li>
+            <li (click)="filterByPrice('100000-300000')">{{ 'tours.prices.0' | translate }}</li>
+            <li (click)="filterByPrice('300000-500000')">{{ 'tours.prices.1' | translate }}</li>
+            <li (click)="filterByPrice('500000-1000000')">{{ 'tours.prices.2' | translate }}</li>
+            <li (click)="filterByPrice('1000000-')">{{ 'tours.prices.3' | translate }}</li>
           </ul>
         </div>
       </div>
@@ -67,27 +68,25 @@
     <div class="carousel-container">
       <div class="carousel-wrapper">
         <div class="testimonials">
-          <div class="card-tour" *ngFor="let tour of Tours">
-            <div class="card" routerLink="/tour/1">
+          <div class="card-tour" *ngFor="let tour of Tours; let i = index">
+            <div class="card" [routerLink]="['/tour', tour.id]">
               <img [src]="tour.cover_image" alt="Monumen National" class="card-image">
               <div class="card-content">
                 <div class="title">{{tour.title}}</div>
                 <div class="details_tour">
                   <div class="location">
                     <img src="assets/location.8d2d075.svg" alt="Location Icon">
-                    <span>Central Jakarta</span>
+                    <span>{{getCountriesList(i)}}</span>
                   </div>
                   <div class="rating">
-                    <img src="assets/img_5.png" alt="Star">
-                    <img src="assets/img_5.png" alt="Star">
-                    <img src="assets/img_5.png" alt="Star">
-                    <img src="assets/img_5.png" alt="Star">
-                    <img src="assets/img_7.png" alt="Half Star">
-                    <span>4.8</span>
+                    <ng-container *ngFor="let star of getListRatingStar(tour.rating)">
+                      <img [src]="star" alt="Star">
+                    </ng-container>
+                    <span>{{ tour.rating.toFixed(1) }}</span>
                   </div>
                 </div>
                 <div style="width: 100%">
-                  <p class="price">289 000 <span>{{ 'tours.price_per_day' | translate }}</span></p>
+                  <p class="price">{{tour.price}}₸<span>/{{ tour.duration_days }} {{ 'DAY' | translate}} </span></p>
                   <button class="booking-button">{{ 'tours.booking' | translate }}</button>
                 </div>
               </div>

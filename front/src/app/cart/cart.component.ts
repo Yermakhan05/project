@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CartItem, CartService} from '../Service/CartService';
 import {NgClass, NgForOf, NgIf, NgStyle} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
+import {NavigationEnd, Router} from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -8,14 +10,15 @@ import {NgClass, NgForOf, NgIf, NgStyle} from '@angular/common';
     NgStyle,
     NgClass,
     NgIf,
-    NgForOf
+    NgForOf,
+    TranslatePipe
   ],
   templateUrl: './cart.component.html',
   standalone: true,
   styleUrl: './cart.component.css'
 })
-export class CartComponent {
-  constructor(private cartService: CartService) {}
+export class CartComponent implements OnInit{
+  constructor(private cartService: CartService, private router: Router) {}
 
   get cartItems(): CartItem[] {
     return this.cartService.cartItems;
@@ -48,5 +51,13 @@ export class CartComponent {
       this.cartService.clearCart();
       alert('You bought the items');
     }
+  }
+
+  ngOnInit(): void {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        window.scrollTo(0, 0); // Прокрутка в самый верх
+      }
+    });
   }
 }

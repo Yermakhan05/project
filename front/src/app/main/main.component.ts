@@ -154,4 +154,35 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit{
     this.currentIndex = (this.currentIndex + 1) % this.images.length;
     this.link_img = this.images[this.currentIndex];
   }
+
+  getCountriesList(id: number): string {
+    let countryList = this.Tours[id].country.join(", ");
+    if (countryList.length > 19){
+      countryList = countryList.slice(0, 19) + "..."
+    }
+    return countryList;
+  }
+
+  getListRatingStar(tour_rating: number): string[] {
+    let full_star = "assets/img_5.png";  // Полная звезда
+    let half_star = "assets/img_7.png";  // Половина звезды
+    let empty_star = "assets/img_10.png"; // Пустая звезда (если нужна)
+
+    let stars: string[] = [];
+    let fullStars = Math.floor(tour_rating); // Количество полных звезд
+    let hasHalfStar = tour_rating % 1 >= 0.5; // Проверка на половину звезды
+
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(full_star);
+    }
+    if (hasHalfStar) {
+      stars.push(half_star);
+    }
+    while (stars.length < 5) {
+      stars.push(empty_star);
+    }
+
+    return stars;
+  }
+
 }

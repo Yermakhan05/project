@@ -12,6 +12,19 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 import environ
+from django.utils.translation import gettext_lazy as _
+
+LANGUAGE_CODE = 'ru'  # Язык по умолчанию
+
+LANGUAGES = [
+    ('en', _('English')),
+    ('ru', _('Русский')),
+]
+
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+
 
 env = environ.Env()
 environ.Env.read_env()
@@ -22,6 +35,9 @@ KASPI_PAYMENT_URL = "https://kaspi.kz/pay/api/payment"  # URL для плате�
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale'),
+]
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -40,6 +56,11 @@ CORS_ORIGIN_WHITELIST = (
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.MultiPartParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.JSONParser',
     ),
     # 'TOKEN_EXPIRE': datetime.timedelta(days=1),
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
@@ -60,10 +81,15 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'api',
-    'corsheaders'
+    'corsheaders',
+    'modeltranslation',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -72,7 +98,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
 ]
 
 ROOT_URLCONF = 'back.urls'
@@ -130,13 +155,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
 
-USE_I18N = True
-
-USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
@@ -150,6 +170,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+# AUTH_USER_MODEL = 'api.CustomUser'
 
 
 # Default primary key field type

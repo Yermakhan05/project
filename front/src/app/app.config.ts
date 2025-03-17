@@ -2,9 +2,16 @@ import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } fr
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideHttpClient, HttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {
+  provideHttpClient,
+  HttpClient,
+  withInterceptorsFromDi,
+  withInterceptors,
+  HTTP_INTERCEPTORS
+} from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import {LanguageInterceptor} from './Service/language.interceptor';
 
 // Фабрика загрузчика переводов
 export function HttpLoaderFactory(http: HttpClient) {
@@ -14,16 +21,19 @@ export function HttpLoaderFactory(http: HttpClient) {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes), // ✅ Оставляем только один вызов provideRouter()
-    provideHttpClient(withInterceptorsFromDi()),
+    provideRouter(routes),
+    provideHttpClient(
+      withInterceptorsFromDi() // ✅ Подключаем DI-интерцепторы
+    ),
     importProvidersFrom(
       TranslateModule.forRoot({
         loader: {
           provide: TranslateLoader,
           useFactory: HttpLoaderFactory,
-          deps: [HttpClient], // ✅ Исправлено: используем HttpClient вместо provideHttpClient
+          deps: [HttpClient],
         },
       })
     ),
+    { provide: HTTP_INTERCEPTORS, useClass: LanguageInterceptor, multi: true }, // ✅ Регистрируем интерцептор
   ],
 };

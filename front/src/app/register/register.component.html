@@ -9,21 +9,26 @@
         </div>
 
         <div class="Form">
+          <p *ngIf="isIncorrectRegister" style="color: red">{{'MESSAGE_INCORRECT_REGISTER' | translate}}</p>
+          <div class="Input-Container">
+            <p class="Input-p">Username</p>
+            <input type="text" class="Input-input" [(ngModel)]="user.username">
+          </div>
           <div class="Input-Container">
             <p class="Input-p">{{ 'EMAIL' | translate }}</p>
-            <input type="email" class="Input-input">
+            <input type="email" class="Input-input" [(ngModel)]="user.email">
           </div>
           <div class="Input-Container">
             <p class="Input-p">{{ 'ENTER_PASSWORD' | translate }}</p>
-            <input class='Input-input'>
+            <input class='Input-input' type="password" [(ngModel)]="user.password">
           </div>
           <div class="Input-Container">
             <p class="Input-p">{{ 'CONFIRM_PASSWORD' | translate }}</p>
-            <input class='Input-input'>
+            <input class='Input-input' type="password" [(ngModel)]="user.password_1">
           </div>
           <div class="ForgotPassword"></div>
           <div class="buttons">
-            <button class="MainButton-a">{{ 'REGISTER' | translate }}</button>
+            <button class="MainButton-a" (click)="register()">{{ 'REGISTER' | translate }}</button>
             <div class="Social_Sign_In-Or">
               <div class="line-a"></div>
               <p class='line-p'>{{ 'OR' | translate }}</p>
@@ -64,16 +69,17 @@
           </div>
 
           <div class="Form">
+            <p *ngIf="isIncorrect" style="color: red">{{'MESSAGE_INCORRECT' | translate}}</p>
             <div class="Input-Container">
-              <p class="Input-p">{{ 'EMAIL' | translate }}</p>
-              <input type="email" class="Input-input" placeholder="">
+              <p class="Input-p">Username</p>
+              <input type="text" class="Input-input" placeholder="" [(ngModel)]="credentials.username">
             </div>
             <div class="Input-Container">
               <p class="Input-p">{{ 'ENTER_PASSWORD' | translate }}</p>
-              <input class='Input-input'>
+              <input class='Input-input' type="password" [(ngModel)]="credentials.password">
             </div>
             <p class="ForgotPassword">{{ 'FORGOT_PASSWORD' | translate }}</p>
-            <button class="MainButton-a">{{ 'LOGIN_USER' | translate }}</button>
+            <button class="MainButton-a" (click)="login()">{{ 'LOGIN_USER' | translate }}</button>
             <div class="Social_Sign_In-Or">
               <div class="line-a"></div>
               <p class='line-p'>{{ 'OR' | translate }}</p>

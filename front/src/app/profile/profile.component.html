@@ -1,32 +1,138 @@
 <body>
 
 <div class="profile-container">
+  <button class="logout-btn" (click)="logout()">logout</button>
   <div class="cover-photo">
-    <button class="upload-cover-btn">
-      <img src="assets/apple-camera.png">
+    <img class="cover_img" [src]="userProfile.cover_photo" alt="">
+    <button class="upload-cover-btn" (click)="setActiveTab('settings')">
+      <img src="assets/apple-camera.png" alt="">
       <span>{{ 'UPLOAD_COVER_PHOTO' | translate }}</span>
     </button>
   </div>
 
   <div class="profile-info">
-    <img src="assets/profile.avif" alt="Profile Picture" class="profile-pic">
+    <img [src]="userProfile.profile_pic" alt="Profile Picture" class="profile-pic">
     <div class="details">
-      <h2>Yermakhan Kassymzhomart <span class="edit-icon">✏️</span></h2>
-      <p class="location">{{ 'LOCATION_PROFILE' | translate }}</p>
-      <p class="points">{{ 'POINTS' | translate }} <span class="info-icon">{{ 'INFO' | translate }}</span></p>
+      <h2>{{user().username}} {{userProfile.full_name}} <span class="edit-icon">✏️</span></h2>
+      <p class="location">{{userProfile.location_profile}}</p>
+      <p class="points">🏅 {{ UserPoint }} {{ 'POINTS' | translate }} <span class="info-icon" (click)="isModalOpen = true">{{ 'INFO' | translate }}</span></p>
     </div>
   </div>
 
   <div class="navigation">
-    <button class="nav-item">{{ 'REVIEW' | translate }}</button>
-    <button class="nav-item">{{ 'BOOKING_HISTORY' | translate }}</button>
-    <button class="nav-item">{{ 'NEW_BOOKINGS' | translate }}</button>
-    <button class="nav-item active">{{ 'MY_FAVOURITES' | translate }}</button>
-    <button class="nav-item">{{ 'ACCOUNT_SETTINGS' | translate }}</button>
+    <button class="nav-item"
+            [class.active]="selectedTab === 'reviews'"
+            (click)="setActiveTab('reviews')">
+      {{ 'REVIEW' | translate }}
+    </button>
+
+    <button class="nav-item"
+            [class.active]="selectedTab === 'bookings'"
+            (click)="setActiveTab('bookings')">
+      {{ 'BOOKING_HISTORY' | translate }}
+    </button>
+    <button class="nav-item" routerLink="/cart">{{ 'NEW_BOOKINGS' | translate }}</button>
+    <button class="nav-item"
+            [class.active]="selectedTab === 'settings'"
+            (click)="setActiveTab('settings')">
+      {{ 'ACCOUNT_SETTINGS' | translate }}
+    </button>
   </div>
 
-  <div style="display: flex; justify-content: center; align-items: center; height: 500px">
-    <h1>{{ 'LIST_EMPTY' | translate }}</h1>
+  <div style="width: 90%; margin: 0 auto">
+    <div *ngIf="isLoading" class="loading">⏳ Loading profile...</div>
+    <div *ngIf="selectedTab === 'reviews'" id="reviews" class="review-body">
+      <div class="review-container" *ngFor="let r of Reviews">
+        <div class="review-header">
+          <div class="profile">
+            <img class="avatar" [src]="'http://127.0.0.1:8000/' + r.tour.cover_image" alt="">
+            <div class="user-info">
+              <h3 class="user-name" routerLink="/tour/{{r.tour.id}}">{{r.tour.title.toUpperCase()}}</h3>
+            </div>
+          </div>
+          <div>
+            <span class="review-date">{{ r.date|date:"d.m.Y H:00" }}</span>
+            <div style="display: flex; margin-top: 10px">
+              <img style="width: 20px" src="assets/img_5.png" alt="star" *ngFor="let x of getStarArray(r.star - 0)">
+              <img style="width: 20px; margin-bottom: -2px" src="assets/img_10.png" alt="star" *ngFor="let x of getStarArray(5 -r.star)">
+            </div>
+          </div>
+        </div>
+        <div class="review-content">
+          <h2 class="review-title">{{r.text | truncate:5}}</h2>
+          <p class="review-text">{{r.text}}</p>
+        </div>
+        <div class="review-images">
+          <img *ngFor="let i of r.review_images" [src]="'http://127.0.0.1:8000/' + i" alt="Review Image">
+        </div>
+      </div>
+    </div>
+    <div *ngIf="selectedTab === 'bookings'" class="cart-container">
+      <div>
+        <table class="cart-table">
+          <thead>
+          <tr>
+            <th>{{ 'CART.TOUR' | translate }}</th>
+            <th>{{ 'CART.DATE' | translate }}</th>
+            <th>Status</th>
+            <th>{{ 'CART.PRICE_PER_PERSON' | translate }}</th>
+            <th>{{ 'CART.TOTAL' | translate }}</th>
+            <th>Created At</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of BookingTours">
+            <td class="tour-info">
+              <img [src]="'http://127.0.0.1:8000/' + item.tour.cover_image" alt="Mo National">
+              <span>{{ item.tour.title }}</span>
+            </td>
+            <td>{{item.tour.duration}}</td>
+            <td>
+              <span class="qty">{{item.status}}</span>
+            </td>
+            <td>$3994</td>
+            <td>$98429</td>
+            <td>{{item.created_at|date:"d.m.Y H:00"}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <ng-template #emptyCart>
+        <p class="empty-message">{{ 'CART.EMPTY_MESSAGE' | translate }}</p>
+      </ng-template>
+    </div>
+    <div *ngIf="selectedTab === 'settings'" class="settings-container">
+      <form *ngIf="!isLoading" [formGroup]="profileForm" (ngSubmit)="updateProfile()" class="profile-form">
+        <label for="full_name">Full Name</label>
+        <input id="full_name" formControlName="full_name" type="text" class="input" />
+        <div *ngIf="profileForm.get('full_name')?.invalid && profileForm.get('full_name')?.touched" class="error">
+          Full name is required (min 3 characters).
+        </div>
+
+        <label for="location_profile">Location</label>
+        <textarea id="location_profile" formControlName="location_profile" class="textarea"></textarea>
+
+        <div class="file-input">
+          <label for="profile_pic">📷 Upload Profile Picture</label>
+          <input id="profile_pic" type="file" (change)="onFileChange($event, 'profile_pic')" />
+          <img *ngIf="profilePicPreview" [src]="profilePicPreview" class="file-preview"  alt=""/>
+        </div>
+
+        <div class="file-input">
+          <label for="cover_photo">🌄 Upload Cover Photo</label>
+          <input id="cover_photo" type="file" (change)="onFileChange($event, 'cover_photo')" />
+          <img *ngIf="coverPhotoPreview" [src]="coverPhotoPreview" class="file-preview"  alt=""/>
+        </div>
+
+        <button type="submit" [disabled]="profileForm.invalid" class="submit-btn">Update Profile</button>
+      </form>
+    </div>
+  </div>
+</div>
+<div *ngIf="isModalOpen" class="modal-overlay">
+  <div class="modal-2">
+    <span class="close-2" (click)="closeModal()">&times;</span>
+    <p>{{ fullText }}</p>
   </div>
 </div>
 </body>

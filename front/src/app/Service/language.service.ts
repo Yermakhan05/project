@@ -10,10 +10,14 @@ export class LanguageService {
 
   setLanguage(lang: string) {
     this.languageSubject.next(lang);
-    localStorage.setItem('language', lang); // Сохраняем язык в localStorage
+    localStorage.setItem('language', lang);// Сохраняем язык в localStorage
   }
 
   getLanguage(): string {
+    return localStorage.getItem('language') || 'ru';
+  }
+
+  private getStoredLanguage(): string {
     return localStorage.getItem('language') || 'ru';
   }
 }

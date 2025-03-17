@@ -1,6 +1,9 @@
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
+
+from django.db.models import Avg
 
 
 class Country(models.Model):
@@ -48,9 +51,18 @@ class Tour(models.Model):
     map_image = models.ImageField(upload_to='maps/', blank=True, null=True, help_text="Карта тура")
     map_links = models.JSONField(default=default_map_links, help_text="Ссылки на карты",)
     cover_image = models.ImageField(upload_to='tours/covers/', blank=True, null=True, help_text="Обложка тура")
+    rating = models.FloatField(default=0.0, help_text="Средняя оценка тура")
+    price_list = models.TextField(help_text="Цены тура", null=True)
+    price = models.IntegerField(help_text="Цена в тенге", default=1, null=True)
 
     def __str__(self):
         return self.title
+
+    def update_rating(self):
+        """Обновляет средний рейтинг тура на основе отзывов"""
+        avg_rating = self.reviews.aggregate(avg_rating=Avg('star'))['avg_rating']
+        self.rating = avg_rating if avg_rating is not None else 0.0
+        self.save()
 
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reviews", help_text="Пользователь, оставивший отзыв")
@@ -59,19 +71,30 @@ class Review(models.Model):
     text = models.TextField(help_text="Текст отзыва")
     helpful = models.PositiveIntegerField(default=0, help_text="Количество отметок 'Полезно'")
     not_helpful = models.PositiveIntegerField(default=0, help_text="Количество отметок 'Не полезно'")
+    date = models.DateTimeField(auto_now_add=True, help_text="Дата и время создания отзыва", null=True)
+
+    def save(self, *args, **kwargs):
+        """Пересчитывает рейтинг тура при добавлении или изменении отзыва"""
+        super().save(*args, **kwargs)
+        self.tour.update_rating()
+
+    def delete(self, *args, **kwargs):
+        """Пересчитывает рейтинг тура при удалении отзыва"""
+        super().delete(*args, **kwargs)
+        self.tour.update_rating()
 
 class TourImage(models.Model):
-    tour = models.ForeignKey(Tour, on_delete=models.CASCADE, help_text="Связанный тур")
-    image = models.ImageField(upload_to='tours/', help_text="Изображение тура")
+    tour = models.ForeignKey(Tour, on_delete=models.CASCADE, help_text="Связанный тур" , related_name="tour_images")
+    image = models.ImageField(upload_to='media/', help_text="Изображение тура")
 
 class ReviewImage(models.Model):
-    review = models.ForeignKey(Review, on_delete=models.CASCADE, help_text="Связанный отзыв")
+    review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name="review_images", help_text="Связанный отзыв")
     image = models.ImageField(upload_to='reviews/', help_text="Изображение отзыва")
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile", help_text="Связанный пользователь")
     location_profile = models.TextField(blank=True, null=True, help_text="Локация пользователя")
-    full_name = models.CharField(max_length=255, help_text="Полное имя пользователя")
+    full_name = models.CharField(max_length=255, null=True, help_text="Полное имя пользователя")
     cover_photo = models.ImageField(upload_to='users/covers/', blank=True, null=True, help_text="Обложка профиля")
     profile_pic = models.ImageField(upload_to='users/profiles/', blank=True, null=True, help_text="Фото профиля")
     booking_history = models.ManyToManyField(Tour, blank=True, related_name="booked_users", help_text="История бронирований пользователя")

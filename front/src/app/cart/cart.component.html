@@ -1,16 +1,16 @@
 <div class="cart-container">
   <div>
-    <h2 class="cart-title">Корзина туров</h2>
+    <h2 class="cart-title">{{ 'CART.TITLE' | translate }}</h2>
 
     <table class="cart-table" *ngIf="cartItems.length > 0; else emptyCart">
       <thead>
       <tr>
-        <th>Тур</th>
-        <th>Дата</th>
-        <th>Количество</th>
-        <th>Цена за человека</th>
-        <th>Итого</th>
-        <th>Удалить</th>
+        <th>{{ 'CART.TOUR' | translate }}</th>
+        <th>{{ 'CART.DATE' | translate }}</th>
+        <th>{{ 'CART.QUANTITY' | translate }}</th>
+        <th>{{ 'CART.PRICE_PER_PERSON' | translate }}</th>
+        <th>{{ 'CART.TOTAL' | translate }}</th>
+        <th>{{ 'CART.REMOVE' | translate }}</th>
       </tr>
       </thead>
       <tbody>
@@ -33,21 +33,20 @@
     </table>
   </div>
 
-  <!-- Если корзина пуста -->
   <ng-template #emptyCart>
-    <p class="empty-message">Ваша корзина пуста</p>
+    <p class="empty-message">{{ 'CART.EMPTY_MESSAGE' | translate }}</p>
   </ng-template>
 
   <div class="cart-footer">
     <div class="coupon">
-      <input type="text" placeholder="Купон">
-      <button class="apply-btn">Применить</button>
+      <input type="text" [placeholder]="'CART.COUPON_PLACEHOLDER' | translate">
+      <button class="apply-btn">{{ 'CART.APPLY_COUPON' | translate }}</button>
     </div>
     <div class="total">
-      <p>Общее количество: <span style="font-weight: bold">{{ overallQuantity }}</span></p>
-      <p>Итоговая сумма: <span style="font-weight: bold">${{ grandTotal }}</span></p>
+      <p>{{ 'CART.TOTAL_QUANTITY' | translate }}: <span style="font-weight: bold">{{ overallQuantity }}</span></p>
+      <p>{{ 'CART.GRAND_TOTAL' | translate }}: <span style="font-weight: bold">${{ grandTotal }}</span></p>
       <div class="line-after"></div>
-      <button class="checkout-btn" (click)="buyItems()">Оформить заказ</button>
+      <button class="checkout-btn" (click)="buyItems()">{{ 'CART.CHECKOUT' | translate }}</button>
     </div>
   </div>
 </div>

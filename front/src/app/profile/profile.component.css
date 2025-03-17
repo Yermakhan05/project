@@ -3,6 +3,124 @@ body {
   margin-top: -68px;
   padding: 0;
 }
+/* Основные стили формы */
+.profile-form {
+  width: 100%;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Стилизация меток */
+.name_level {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+/* Поля ввода */
+.input, .textarea {
+  width: 98%;
+  padding: 10px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.input:focus, .textarea:focus {
+  border-color: #6D6523;
+  outline: none;
+  box-shadow: 0 0 5px rgb(82, 75, 21);
+}
+
+/* Поле textarea */
+.textarea {
+  height: 80px;
+  resize: none;
+}
+
+/* Стили кнопки */
+.submit-btn {
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #6D6523, #524b15);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+  background: linear-gradient(135deg, #575013, #574f0e);
+}
+
+.submit-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Ошибки */
+.error {
+  font-size: 12px;
+  color: red;
+  margin-top: -10px;
+}
+
+/* Стили для загрузки файлов */
+.file-input {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.file-input label {
+  cursor: pointer;
+  color: #575013;
+  font-weight: bold;
+}
+
+.file-input input {
+  display: none;
+}
+
+.file-preview {
+  margin-top: 10px;
+  width: 40%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 2px solid #ddd;
+}
+
+/* Стили для загрузки */
+.loading {
+  text-align: center;
+  font-size: 18px;
+  color: gray;
+}
+
+/* 📱 Адаптивность для мобильных устройств */
+@media (max-width: 480px) {
+  .profile-form {
+    max-width: 90%;
+    padding: 15px;
+  }
+}
+
+.logout-btn{
+  position: absolute; right: 8%; top: 150px; z-index: 100; border: none; background-color: #6D6523; color: white; padding: 6px 18px; border-radius: 8px
+}
 
 .profile-container {
   background-color: white;
@@ -11,16 +129,19 @@ body {
 }
 
 .cover-photo {
-  background: url('../../assets/slide1.jpg') no-repeat center/cover;
   height: 350px;
-  position: relative;
+}
+.cover_img{
+  height: 350px;
+  width: 100%;
+  object-fit: cover;
 }
 
 .upload-cover-btn {
   position: absolute;
-  bottom: 30px;
+  top: 40%;
   right: 50px;
-  background-color: #f4a261;
+  background-color: #6D6523;
   color: white;
   border: none;
   padding: 8px 12px;
@@ -28,6 +149,7 @@ body {
   cursor: pointer;
   font-size: 12px;
   font-weight: bold;
+  z-index: 10;
 }
 
 .profile-info {
@@ -106,6 +228,306 @@ body {
   margin-right: 5px;
   margin-bottom: -3px
 }
+
+
+.review-body {
+  font-family: Poppins, sans-serif;
+  margin: 100px auto 400px auto;
+  max-width: 80%;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.review-container {
+  width: 100%;
+  margin-bottom: 50px;
+}
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 10%;
+  background-color: #223;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.user-name {
+  margin: 0;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.review-date {
+  color: gray;
+  font-size: 14px;
+}
+
+.review-content {
+  margin-top: 10px;
+  max-width: 50%;
+}
+
+.review-title {
+  font-size: 18px;
+  margin: 0 0 5px;
+}
+
+.review-text {
+  color: #333;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.review-images {
+  overflow-x: auto;
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.review-images img {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+
+.cart-container {
+  width: 100%;
+  margin: 100px auto 400px auto;
+  display: flex;
+  justify-content: center;
+}
+
+.cart-title {
+  font-size: 30px;
+  font-weight: 500;
+  margin-bottom: 40px;
+}
+
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cart-table th, .cart-table td {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.tour-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tour-info img {
+  width: 80px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.qty-btn {
+  border: none;
+  background-color: #6D6523;
+  color: white;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin: 0 3px;
+  border-radius: 5px;
+}
+
+.qty-btn:hover {
+  background-color: #bbb160;
+}
+
+.remove-btn {
+  border: none;
+  color: black;
+  background-color: white;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+
+.cart-footer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+}
+
+
+.coupon input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.apply-btn {
+  background-color: #6D6523;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+
+.apply-btn:hover {
+  background-color: #6D6523;
+}
+
+.total p {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+.line-after{
+  height: 1px;
+  background-color: #6D6523;
+  margin-bottom: 20px;
+}
+
+.checkout-btn {
+  width: 80%;
+  display: flex;
+  margin: 0 auto;
+  justify-content: center;
+  background-color: white;
+  color: black;
+  border: 1px solid #6D6523;
+  padding: 16px 0;
+  cursor: pointer;
+  border-radius: 25px;
+  font-size: 16px;
+}
+
+.checkout-btn:hover {
+  background-color: #dadad1;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modal-2 {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 50%;
+  text-align: center;
+}
+
+.close-2 {
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+@media (max-width: 1040px) {
+  .cart-container{
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 786px) {
+  .cart-container {
+    padding: 10px;
+  }
+  .cart-title {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .cart-table {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .cart-table thead {
+    display: none; /* Скрываем заголовки таблицы */
+  }
+
+  .cart-table tbody tr {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+  }
+
+  .tour-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .tour-info img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-bottom: 5px;
+  }
+
+  .qty-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+  }
+
+  .cart-footer {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .coupon input {
+    width: 100%;
+  }
+
+  .apply-btn, .checkout-btn {
+    width: 100%;
+  }
+  .apply-btn{
+    margin: 0;
+  }
+  .coupon input {
+    width: 93%;
+    margin: 0;
+  }
+}
+
 
 @media (max-width: 400px) {
   .profile-pic {

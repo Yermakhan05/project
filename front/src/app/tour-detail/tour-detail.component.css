@@ -11,6 +11,7 @@ body{
 }
 
 .gallery {
+  width: 100%;
   display: flex;
   gap: 10px;
   padding: 20px 0;
@@ -18,13 +19,13 @@ body{
 
 .gallery-main {
   flex: 2;
+  position: relative;
 }
 
 .gallery-main img {
   width: 100%;
   height: 600px;
   border-radius: 10px;
-  object-fit: cover;
 }
 
 .gallery-side {
@@ -32,13 +33,83 @@ body{
   display: flex;
   flex-direction: column;
   gap: 10px;
+  position: relative;
 }
 
 .gallery-item img {
   width: 100%;
   height: 295px;
   border-radius: 10px;
-  object-fit: cover;
+}
+
+.more-image {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  border: none;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.more-image:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+}
+
+.modal-content {
+  position: relative;
+  max-width: 80%;
+  max-height: 90%;
+  display: flex;
+  align-items: center;
+}
+
+.modal img {
+  width: auto;
+  max-height: 90vh;
+  border-radius: 10px;
+}
+
+.arrow {
+  position: absolute;
+  top: 51%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  padding: 10px 15px;
+  font-size: 24px;
+  width: 50px;
+  height: 40px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.arrow:hover {
+  background: rgba(255, 255, 255, 1);
+}
+
+.left {
+  left: -50px;
+}
+
+.right {
+  right: -50px;
 }
 
 .menu {
@@ -102,9 +173,7 @@ body{
 }
 
 .stars {
-  color: #facc15; /* Желтый */
-  font-size: 18px;
-  margin-right: 8px;
+  width: 18px;
 }
 
 .rating-text {
@@ -143,7 +212,7 @@ body{
   cursor: pointer;
 }
 
-.price-section {
+.price-section-1 {
   display: flex;
   flex-direction: column;
   align-items: start;
@@ -152,6 +221,7 @@ body{
 }
 .price-text {
   display: flex;
+  max-width: 200px;
   flex-direction: column;
   align-items: start;
 }
@@ -244,6 +314,33 @@ body{
 
 .section-item {
   margin-bottom: 10px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modal-2 {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 50%;
+  text-align: center;
+}
+
+.close-2 {
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
 }
 
 
@@ -341,6 +438,7 @@ body{
   font-family: Poppins, sans-serif;
   margin: 20px auto 80px auto;
   max-width: 90%;
+  min-height: 60vh;
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -594,6 +692,98 @@ body{
 .submit:hover {
   background: #989043;
 }
+
+.review-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.review-modal-container {
+  background: white;
+  padding: 20px;
+  width: 400px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.review-modal-container h2 {
+  color: #6D6523;
+  margin-bottom: 15px;
+}
+
+.review-modal-form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.review-modal-form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  resize: vertical;
+}
+
+.review-modal-photo-upload {
+  margin: 15px 0;
+}
+
+.review-modal-photo-box {
+  border: 2px dashed #6D6523;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.review-modal-preview-images {
+  margin-top: 10px;
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.review-modal-preview-img {
+  height: 50px;
+  border-radius: 5px;
+}
+
+.review-modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.review-modal-btn {
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.review-modal-cancel {
+  background: #ccc;
+}
+
+.review-modal-submit {
+  background: #6D6523;
+  color: white;
+}
+
 @media (max-width: 600px) {
   .review-div {
     max-width: 90%;

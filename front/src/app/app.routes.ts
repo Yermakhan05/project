@@ -6,6 +6,7 @@ import { RegisterComponent } from './register/register.component';
 import { TourDetailComponent } from './tour-detail/tour-detail.component';
 import { ToursComponent } from './tours/tours.component';
 import {CartComponent} from './cart/cart.component';
+import {NotFoundComponent} from './not-found/not-found.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/main', pathMatch: 'full' },
@@ -16,5 +17,6 @@ export const routes: Routes = [
   { path: 'login', component: RegisterComponent },
   { path: 'tour/:id', component: TourDetailComponent },
   { path: 'tours', component: ToursComponent },
-  { path: 'cart', component: CartComponent }
+  { path: 'cart', component: CartComponent },
+  { path: '**', component: NotFoundComponent }
 ];

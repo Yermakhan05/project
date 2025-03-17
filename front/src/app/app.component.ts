@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, signal, ViewChild} from '@angular/core';
 import {FooterComponent} from './footer/footer.component';
 import {TopBarComponent} from './top-bar/top-bar.component';
 import {MainComponent} from './main/main.component';
@@ -9,6 +9,7 @@ import {ContactsComponent} from './contacts/contacts.component';
 import {ProfileComponent} from './profile/profile.component';
 import {Router, RouterOutlet} from '@angular/router';
 import {NgIf} from '@angular/common';
+import {AuthService} from './Service/auth.service';
 
 
 @Component({
@@ -31,14 +32,13 @@ import {NgIf} from '@angular/common';
 })
 export class AppComponent implements OnInit{
   title = 'front';
+  isAuth: boolean = false
 
   constructor(private router: Router) {
   }
   ngOnInit(): void {
   }
-
-
-  isAuthPage() {
-    return this.router.url === '/register' || this.router.url === '/login';
+  isMainPage() {
+    return this.router.url === '/main' || this.router.url === '/tours' || this.router.url === '/cart' || this.router.url === '/contacts' || this.router.url === '/profile' || this.router.url === '/' || this.router.url.startsWith('/tour/');
   }
 }

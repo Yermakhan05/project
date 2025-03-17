@@ -64,15 +64,15 @@
     "search_placeholder": "Go to mountain, ocean, attractions",
     "search_btn": "Search",
     "filters": {
-      "location": "Country",
+      "location": "Continents",
       "city": "City",
       "durations": "Durations",
       "price": "Average Price"
     },
-    "locations": ["Spain", "Kazakhstan", "Korea", "Japan"],
+    "locations": ["All", "Africa", "Asia", "Europe", "North America", "South America", "Antarctica", "Oceania"],
     "cities": ["Surabaya", "Jakarta", "Bali", "Bandung"],
     "durations": ["1 - 6 days", "1 - 2 weeks", "2 - 3 weeks", "1.. month"],
-    "prices": ["100.000 - 300.000 ₸", "300.000 - 500.000 ₸", "500.000 - 1.000.000₸"],
+    "prices": ["100.000 - 300.000 ₸", "300.000 - 500.000 ₸", "500.000 - 1.000.000₸", "1.000.000 - ...₸"],
     "account_prompt": {
       "title": "Do you have an account yet?",
       "description": "Come on, create an account or log in. There are discounts and benefits so you can make more money!",
@@ -143,6 +143,7 @@
   "APPLICATION_TITLE": "Tour Selection Application",
   "NAME_PLACEHOLDER": "Your name *",
   "EMAIL_PLACEHOLDER": "Email",
+  "MESSAGE_INCORRECT_REGISTER": "Password must be at least 6 characters\nUsername or Email already used",
   "PHONE_PLACEHOLDER": "(000) 000-0000",
   "COMMENT_PLACEHOLDER": "Comment",
   "SUBMIT_BUTTON": "Submit",
@@ -155,6 +156,7 @@
   "DISCOVER_WORLD": "Discover the world with DeltaTour!",
   "BOOK_MORE_TOURS": "Book more tours with DeltaTour!",
   "EMAIL": "Email",
+  "MESSAGE_INCORRECT": "Incorrect password or username",
   "ENTER_PASSWORD": "Enter password",
   "CONFIRM_PASSWORD": "Confirm password",
   "FORGOT_PASSWORD": "Forgot password?",
@@ -170,12 +172,32 @@
   "DELTA_TOUR": "DeltaTour",
   "UPLOAD_COVER_PHOTO": "Upload Cover Photo",
   "LOCATION_PROFILE": "🇰🇿 Almaty, Kazakhstan",
-  "POINTS": "🏅 5 Countries",
+  "POINTS": "Countries",
   "INFO": "ℹ️",
   "REVIEW": "Review",
-  "BOOKING_HISTORY": "Booking History (2)",
-  "NEW_BOOKINGS": "New Bookings (1)",
-  "MY_FAVOURITES": "My Favourites (7)",
+  "BOOKING_HISTORY": "Booking History",
+  "NEW_BOOKINGS": "New Bookings",
   "ACCOUNT_SETTINGS": "Account Settings",
-  "LIST_EMPTY": "List is empty"
+  "LIST_EMPTY": "List is empty",
+  "NOT_FOUND": {
+    "TITLE": "404 - Page Not Found",
+    "MESSAGE": "Unfortunately, the requested page does not exist.",
+    "BACK_HOME": "Return to Home"
+  },
+  "CART": {
+    "TITLE": "Tour Cart",
+    "EMPTY_MESSAGE": "Your cart is empty",
+    "TOUR": "Tour",
+    "DATE": "Date",
+    "QUANTITY": "Quantity",
+    "PRICE_PER_PERSON": "Price per person",
+    "TOTAL": "Total",
+    "REMOVE": "Remove",
+    "COUPON_PLACEHOLDER": "Coupon",
+    "APPLY_COUPON": "Apply",
+    "TOTAL_QUANTITY": "Total Quantity",
+    "GRAND_TOTAL": "Grand Total",
+    "CHECKOUT": "Checkout"
+  },
+  "DAY": "days"
 }

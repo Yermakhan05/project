@@ -1,33 +1,263 @@
 import uuid
 
-from django.shortcuts import render
+import django_filters
+from urllib.parse import unquote
 import requests
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
-from .models import Payment, Booking
-from rest_framework import viewsets, filters
+from rest_framework.exceptions import NotFound
+from rest_framework.generics import RetrieveAPIView
+from rest_framework.permissions import IsAuthenticated
+
+from .models import Payment, Booking, Country, Review
+from rest_framework import viewsets, filters, generics, permissions
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
 from .models import Tour
-from .serializers import TourSerializer
+from .serializers import TourSerializer, CountrySerializer, TourDetailSerializer, ReviewSerializer, \
+    UserProfileSerializer_2, BookingSerializer, ReviewSerializer2, ReviewSerializer3, UserFormSerializer
+from django.utils.translation import activate
+from django.utils.translation import gettext as _
+from django.contrib.auth import authenticate
+from .serializers import UserSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework import generics
+from .models import UserProfile
+from .serializers import UserProfileSerializer
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.exceptions import NotFound, PermissionDenied
+
+class UserProfileUpdateView(generics.UpdateAPIView):
+    serializer_class = UserProfileSerializer_2
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user.profile
+
+class UserProfileView_2(generics.RetrieveUpdateAPIView):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user.profile
+
+class LogoutView(APIView):
+    def post(self, request):
+        refresh_token = request.data.get("refresh_token")
+
+        if not refresh_token:
+            return Response({"error": "Refresh token is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            token = RefreshToken(refresh_token)
+            token.blacklist()  # ← Блокируем refresh_token
+            return Response({"success": "Logged out"}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class CustomPagination(PageNumberPagination):
-    page_size = 10  # Количество туров на странице
+    page_size = 10
     page_size_query_param = 'page_size'
     max_page_size = 100
 
-# ViewSet для работы с турами
+class TourFilter(django_filters.FilterSet):
+    price_min = django_filters.NumberFilter(field_name="price", lookup_expr='gte')
+    price_max = django_filters.NumberFilter(field_name="price", lookup_expr='lte')
+    duration_min = django_filters.NumberFilter(field_name="duration_days", lookup_expr='gte')
+    duration_max = django_filters.NumberFilter(field_name="duration_days", lookup_expr='lte')
+
+    class Meta:
+        model = Tour
+        fields = ['country__Continent', 'country']
+
 class TourViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Tour.objects.all()
+    queryset = Tour.objects.all().distinct()
     serializer_class = TourSerializer
     pagination_class = CustomPagination
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['country__Continent', 'country', 'city', 'duration_days']  # Фильтры по параметрам
-    search_fields = ['title', 'description']  # Полнотекстовый поиск
-    ordering_fields = ['duration_days']  # Сортировка по цене и длительности
+    filterset_class = TourFilter  # Указываем кастомный фильтр
+    search_fields = ['title', 'description']
+    ordering_fields = ['duration_days']
+
+    def initial(self, request, *args, **kwargs):
+        """Смена языка в зависимости от Accept-Language"""
+        lang = request.headers.get('Accept-Language', 'ru')
+        activate(lang)
+
+        if 'search' in request.GET:
+            request.GET._mutable = True  # Делаем QueryDict изменяемым (только в debug)
+            request.GET['search'] = unquote(request.GET['search'])
+            request.GET._mutable = False
+
+        super().initial(request, *args, **kwargs)
 
 
+class TourDetailView(RetrieveAPIView):
+    """Класс для детального просмотра тура"""
+    queryset = Tour.objects.all()
+    serializer_class = TourDetailSerializer
+    lookup_field = "id"  # Используем id вместо pk
+
+    def initial(self, request, *args, **kwargs):
+        """Смена языка в зависимости от Accept-Language"""
+        lang = request.headers.get('Accept-Language', 'ru')
+        activate(lang)
+        super().initial(request, *args, **kwargs)
+
+
+class CountryViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Country.objects.all()
+    serializer_class = CountrySerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['Continent']
+
+
+from rest_framework import generics, status, permissions
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.exceptions import NotFound
+from rest_framework.response import Response
+from .models import Tour, Review, ReviewImage
+from .serializers import ReviewSerializer, ReviewSerializer3
+
+class TourReviewsAPIView(generics.ListCreateAPIView):
+    parser_classes = (MultiPartParser, FormParser)
+
+    def get_permissions(self):
+        """Доступ к POST и PUT только для авторизованных пользователей"""
+        if self.request.method in ["POST"]:
+            return [permissions.IsAuthenticated()]
+        return []
+
+    def get_queryset(self):
+        tour_id = self.kwargs.get('tour_id')
+        if not Tour.objects.filter(id=tour_id).exists():
+            raise NotFound("Тур не найден")
+        return Review.objects.filter(tour_id=tour_id)
+
+    def get_serializer_class(self):
+        if self.request.method in ["POST"]:
+            return ReviewSerializer3
+        return ReviewSerializer
+
+    def create(self, request, *args, **kwargs):
+        tour_id = self.kwargs.get('tour_id')
+        try:
+            tour = Tour.objects.get(id=tour_id)
+        except Tour.DoesNotExist:
+            raise NotFound("Тур не найден")
+
+        data = request.data.copy()
+        data['tour'] = tour_id
+        data['user'] = request.user.id
+
+        serializer = self.get_serializer(data=data, context={"request": request})
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class ReviewUpdateAPIView(generics.UpdateAPIView):
+    """Обновление отзыва"""
+    parser_classes = (MultiPartParser, FormParser)
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Review.objects.all()
+
+    def get_serializer_class(self):
+        return ReviewSerializer3
+
+    def update(self, request, *args, **kwargs):
+        review = get_object_or_404(Review, id=kwargs["review_id"], user=request.user)
+
+        # Удаляем старые изображения
+        review.review_images.all().delete()
+
+        # Копируем данные из запроса
+        data = request.data.copy()
+
+        # Обрабатываем сериализатор
+        serializer = self.get_serializer(review, data=data, partial=True, context={"request": request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        # Загружаем новые изображения
+        images_data = request.FILES.getlist("images")
+        for image in images_data:
+            ReviewImage.objects.create(review=review, image=image)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class RegisterView(APIView):
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            return Response({"message": "User created successfully"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class LoginView(APIView):
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
+
+
+        user = authenticate(request, username=username, password=password)
+        if user:
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                "refresh": str(refresh),
+                "access": str(refresh.access_token),
+            })
+        return Response({"error": "Invalid Credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+class UserProfileView(APIView):
+    permission_classes = [IsAuthenticated]  # Доступ только для авторизованных пользователей
+
+    def get(self, request):
+        user = request.user
+        return Response({
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+        })
+
+class UserBookingHistoryView(APIView):
+    permission_classes = [IsAuthenticated]  # Доступ только для авторизованных пользователей
+
+    def get(self, request):
+        user = request.user
+        bookings = Booking.objects.filter(user=user, status__in=['confirmed', 'cancelled'])
+        serializer = BookingSerializer(bookings, many=True)
+        return Response(serializer.data)
+
+class UserReviewView(APIView):
+    permission_classes = [IsAuthenticated]  # Доступ только для авторизованных пользователей
+
+    def get(self, request):
+        user = request.user
+        reviews = Review.objects.filter(user=user)
+        serializer = ReviewSerializer2(reviews, many=True)
+        return Response(serializer.data)
+
+
+class UserFormCreateView(APIView):
+    def post(self, request):
+        serializer = UserFormSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Форма успешно отправлена!"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 def create_payment(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id)

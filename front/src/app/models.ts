@@ -1,9 +1,9 @@
-export type Continent = 'AF' | 'AS' | 'EU' | 'NA' | 'SA' | 'OC' | 'AN';
+export type Continent = 'AL' | 'AF' | 'AS' | 'EU' | 'NA' | 'SA' | 'OC' | 'AN';
 
 export interface Country {
   id: number;
   name: string;
-  continent: Continent;
+  Continent: Continent;
 }
 
 export interface City {
@@ -13,18 +13,23 @@ export interface City {
 }
 
 export interface Tour {
+  tour_images: string[];
+  price_list: string;
+  price: number;
+  rating: number;
   id: number;
   title: string;
-  country: Country[];
+  country: string[]
+  // country: Country[];
   city: City[];
-  reviewReport: Record<string, any>;
+  review_report: Record<string, any>;
   duration: string;
   description: string;
   events: string[];
-  durationDays: number;
+  duration_days: number;
   highlights: string[];
-  mapImage?: string;
-  mapLinks: {
+  map_image?: string;
+  map_links: {
     google: string;
     apple: string;
   };
@@ -39,13 +44,15 @@ export interface TourApiResponse {
 }
 
 export interface Review {
+  date: string;
   id: number;
-  user: UserProfile;
+  user: User;
   tour: Tour;
   star: 1 | 2 | 3 | 4 | 5;
   text: string;
   helpful: number;
   notHelpful: number;
+  review_images: string[];
 }
 
 export interface TourImage {
@@ -62,23 +69,27 @@ export interface ReviewImage {
 
 export interface UserProfile {
   id: number;
-  userId: number;
-  locationProfile?: string;
-  fullName: string;
-  coverPhoto?: string;
-  profilePic?: string;
-  bookingHistory: Tour[];
+  location_profile?: string;
+  full_name: string;
+  cover_photo?: string;
+  profile_pic?: string;
+  booking_history: Tour[];
   favourites: Tour[];
+}
+
+export interface User {
+  id: number;
+  username: string;
 }
 
 export type BookingStatus = 'pending' | 'confirmed' | 'cancelled';
 
 export interface Booking {
   id: number;
-  user: UserProfile;
+  user: User;
   tour: Tour;
   status: BookingStatus;
-  createdAt: string;
+  created_at: string;
 }
 
 export type PaymentStatus = 'pending' | 'paid' | 'failed';
@@ -104,7 +115,6 @@ export interface Cart {
 }
 
 export interface UserForm {
-  id: number;
   name: string;
   email: string;
   phone: string;

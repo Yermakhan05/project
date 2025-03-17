@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Country, City, Tour, TourImage, UserProfile, Review, ReviewImage
+from .models import Country, City, Tour, TourImage, UserProfile, Review, ReviewImage, Booking
+
 
 # Inline для изображений тура
 class TourImageInline(admin.TabularInline):  # Можно заменить на StackedInline
@@ -26,7 +27,7 @@ class CityAdmin(admin.ModelAdmin):
 
 @admin.register(Tour)
 class TourAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'get_countries', 'get_cities', 'duration')
+    list_display = ('id', 'title', 'get_countries', 'get_cities', 'duration', 'rating')
     list_filter = ('country', 'city')
     search_fields = ('title', 'description')
     readonly_fields = ('review_report',)
@@ -70,3 +71,8 @@ class ReviewImageAdmin(admin.ModelAdmin):
     list_display = ('id', 'review', 'image')
     list_filter = ('review',)
     search_fields = ('review__text',)
+
+
+@admin.register(Booking)
+class BookingsAdmin(admin.ModelAdmin):
+    list_display = ('id', 'status', 'created_at')

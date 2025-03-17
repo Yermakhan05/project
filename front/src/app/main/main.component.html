@@ -57,7 +57,7 @@
       <div class="light2"></div>
       <div class="carousel-wrapper" #carousel>
         <div class="carousel">
-          <div class="card-tour" *ngFor="let tour of Tours">
+          <div class="card-tour" *ngFor="let tour of Tours; let i = index">
             <div class="card">
               <img [src]="tour.cover_image" alt="Monumen National" class="cover-image">
               <div class="card-content">
@@ -65,15 +65,13 @@
                 <div class="details_tour">
                   <div class="location">
                     <img src="assets/location.8d2d075.svg" alt="Location Icon">
-                    <span>Япония, Корея</span>
+                    <span>{{ getCountriesList(i) }}</span>
                   </div>
                   <div class="rating">
-                    <img src="assets/img_5.png" alt="Star">
-                    <img src="assets/img_5.png" alt="Star">
-                    <img src="assets/img_5.png" alt="Star">
-                    <img src="assets/img_5.png" alt="Star">
-                    <img src="assets/img_7.png" alt="Half Star">
-                    <span>4.8</span>
+                    <ng-container *ngFor="let star of getListRatingStar(tour.rating)">
+                      <img [src]="star" alt="Star">
+                    </ng-container>
+                    <span>{{ tour.rating.toFixed(1) }}</span>
                   </div>
                 </div>
               </div>
