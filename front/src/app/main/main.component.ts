@@ -87,8 +87,8 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit{
     this.languageService.language$.subscribe((lang) => {
       this.translateService.use(lang);
     });
-    this.tourService.getList().subscribe((tourResponse)=>{
-      this.Tours = tourResponse.results;
+    this.tourService.getTopList().subscribe((tours)=>{
+      this.Tours = tours;
       this.cloneSlides()
     })
   }

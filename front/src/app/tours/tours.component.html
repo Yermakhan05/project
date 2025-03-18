@@ -96,7 +96,7 @@
       </div>
     </div>
     <div style="display: flex; justify-content: center; margin-top: 20px">
-      <button class="more_tour">{{ 'tours.more_tours' | translate }}</button>
+      <button class="more_tour" (click)="loadMore()" *ngIf="nextPage">{{ 'tours.more_tours' | translate }}</button>
     </div>
   </div>
 </div>

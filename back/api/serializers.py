@@ -2,8 +2,6 @@ from django.contrib.auth.models import User
 
 from .models import Tour, Country, Review, Booking, ReviewImage, UserForm
 from rest_framework import serializers
-from django.utils.translation import get_language
-from rest_framework import serializers
 from .models import UserProfile
 
 
@@ -145,11 +143,10 @@ class ReviewSerializer3(serializers.ModelSerializer):
         fields = ["tour", "user", "text", "images", "star"]
 
     def create(self, validated_data):
-        images_data = self.context["request"].FILES.getlist("images")  # ✅ Получаем изображения
-        validated_data.pop("images", None)  # 🚀 Удаляем 'images', чтобы избежать ошибки
-        review = Review.objects.create(**validated_data)  # 📝 Создаем отзыв
+        images_data = self.context["request"].FILES.getlist("images")
+        validated_data.pop("images", None)
+        review = Review.objects.create(**validated_data)
 
-        # ✅ Добавляем изображения к отзыву
         for image in images_data:
             ReviewImage.objects.create(review=review, image=image)
 

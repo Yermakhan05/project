@@ -35,6 +35,10 @@ export class ToursComponent implements OnInit{
   selectedDuration: string | null = null;
   selectedPrice: string | null = null;
   searchInput: string | null = null;
+  currentPage = 1;
+  pageSize = 9;
+  nextPage: string | null = null;
+  isNext: boolean = false
 
   constructor(
     private tourService: TourService,
@@ -52,8 +56,21 @@ export class ToursComponent implements OnInit{
     return countryList;
   }
 
+  loadMore() {
+    if (this.nextPage) {
+      this.currentPage++;
+      this.getTours();
+      this.isNext = true
+    }
+  }
+
   getTours(): void {
-    let params: any = {};
+    if (!this.isNext) {
+      this.currentPage = 1;
+      this.Tours = [];
+    }
+
+    let params: any = {"page": this.currentPage, "page_size": this.pageSize};
 
     if (this.selectedContinent && this.selectedContinent !== 'AL') {
       params.country__Continent = this.selectedContinent;
@@ -88,7 +105,13 @@ export class ToursComponent implements OnInit{
     }
 
     this.tourService.getList(params).subscribe((tourResponse) => {
-      this.Tours = tourResponse.results;
+      if (!this.isNext) {
+        this.Tours = tourResponse.results; // Если это новый поиск — заменяем список
+      } else {
+        this.Tours = [...this.Tours, ...tourResponse.results];
+        this.isNext = false // Иначе добавляем результаты (пагинация)
+      }
+      this.nextPage = tourResponse.next;
     });
   }
 

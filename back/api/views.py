@@ -4,33 +4,31 @@ import django_filters
 from urllib.parse import unquote
 import requests
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
-from rest_framework.exceptions import NotFound
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 
-from .models import Payment, Booking, Country, Review
-from rest_framework import viewsets, filters, generics, permissions
+from .models import Payment, Booking, Country
+from rest_framework import viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
-from .models import Tour
-from .serializers import TourSerializer, CountrySerializer, TourDetailSerializer, ReviewSerializer, \
-    UserProfileSerializer_2, BookingSerializer, ReviewSerializer2, ReviewSerializer3, UserFormSerializer
+from .serializers import TourSerializer, CountrySerializer, TourDetailSerializer, \
+    UserProfileSerializer_2, BookingSerializer, ReviewSerializer2, UserFormSerializer
 from django.utils.translation import activate
-from django.utils.translation import gettext as _
 from django.contrib.auth import authenticate
 from .serializers import UserSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.response import Response
-from rest_framework import status
 from rest_framework.views import APIView
-from rest_framework import generics
 from .models import UserProfile
 from .serializers import UserProfileSerializer
+from rest_framework import generics, status, permissions
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.exceptions import NotFound, PermissionDenied
+from rest_framework.exceptions import NotFound
+from rest_framework.response import Response
+from .models import Tour, Review, ReviewImage
+from .serializers import ReviewSerializer, ReviewSerializer3
+
 
 class UserProfileUpdateView(generics.UpdateAPIView):
     serializer_class = UserProfileSerializer_2
@@ -77,12 +75,16 @@ class TourFilter(django_filters.FilterSet):
         model = Tour
         fields = ['country__Continent', 'country']
 
+class TopTourViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Tour.objects.filter(is_top=True)
+    serializer_class = TourSerializer
+
 class TourViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Tour.objects.all().distinct()
     serializer_class = TourSerializer
     pagination_class = CustomPagination
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_class = TourFilter  # Указываем кастомный фильтр
+    filterset_class = TourFilter
     search_fields = ['title', 'description']
     ordering_fields = ['duration_days']
 
@@ -117,14 +119,6 @@ class CountryViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = CountrySerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['Continent']
-
-
-from rest_framework import generics, status, permissions
-from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.exceptions import NotFound
-from rest_framework.response import Response
-from .models import Tour, Review, ReviewImage
-from .serializers import ReviewSerializer, ReviewSerializer3
 
 class TourReviewsAPIView(generics.ListCreateAPIView):
     parser_classes = (MultiPartParser, FormParser)

@@ -6,13 +6,18 @@
 
   <section class="contact-section">
     <div class="form-container">
-      <form class="contact-form">
+      <form class="contact-form" #formRef="ngForm" (ngSubmit)="submitForm(formRef)">
         <div class="form-row">
-          <input type="text" placeholder="{{ 'contact.form.name' | translate }}" class="input-field">
-          <input type="email" placeholder="{{ 'contact.form.email' | translate }}" class="input-field">
+          <input type="text" placeholder="{{ 'contact.form.name' | translate }}" class="input-field" [(ngModel)]="name" name="name" #nameRef="ngModel" required>
+          <span *ngIf="nameRef.invalid && nameRef.touched" class="error-text" style="color: red">*</span>
+          <input type="email" placeholder="{{ 'contact.form.email' | translate }}" class="input-field" [(ngModel)]="email" name="email" #emailRef="ngModel" required>
+          <span *ngIf="emailRef.invalid && emailRef.touched" class="error-text" style="color: red">*</span>
+
         </div>
-        <input type="tel" placeholder="{{ 'contact.form.phone' | translate }}" class="input-field full-width">
-        <textarea placeholder="{{ 'contact.form.comment' | translate }}" class="input-field textarea-field"></textarea>
+        <input type="tel" placeholder="{{ 'contact.form.phone' | translate }}" class="input-field full-width" [(ngModel)]="phone" name="phone" #phoneRef="ngModel" required>
+        <span *ngIf="phoneRef.invalid && phoneRef.touched" class="error-text" style="color: red">*</span>
+
+        <textarea placeholder="{{ 'contact.form.comment' | translate }}" class="input-field textarea-field" [(ngModel)]="comment" name="comment"></textarea>
         <button type="submit" class="submit-button">{{ 'contact.form.submit' | translate }}</button>
       </form>
 

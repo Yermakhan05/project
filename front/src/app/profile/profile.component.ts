@@ -104,7 +104,10 @@ export class ProfileComponent implements OnInit{
   ngOnInit() {
     this.authService.getUserProfile().subscribe(
       data => this.user.set(data),
-      err => console.error('Failed to fetch user data', err)
+      err => {
+        this.logout()
+        console.error('Failed to fetch user data', err)
+      }
     );
     this.profileService.getUserReviews().subscribe({
       next: (review) => this.Reviews = review,

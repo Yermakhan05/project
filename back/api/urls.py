@@ -1,13 +1,11 @@
 from django.urls import path
 from .views import create_payment, check_payment_status, TourViewSet, CountryViewSet, TourDetailView, \
     TourReviewsAPIView, RegisterView, LoginView, UserProfileView, LogoutView, UserProfileView_2, UserProfileUpdateView, \
-    UserBookingHistoryView, UserReviewView, ReviewUpdateAPIView, UserFormCreateView
-
-
-
+    UserBookingHistoryView, UserReviewView, ReviewUpdateAPIView, UserFormCreateView, TopTourViewSet
 
 urlpatterns = [
     path('tours/', TourViewSet.as_view({'get': 'list'}), name='tour-list'),
+    path('top-tours/', TopTourViewSet.as_view({'get': 'list'}), name='top-tour-list'),
     path('tour/<int:id>/', TourDetailView.as_view(), name='tour-detail'),
 
     path('profile/', UserProfileView.as_view(), name='user-profile'),

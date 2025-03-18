@@ -54,6 +54,7 @@ class Tour(models.Model):
     rating = models.FloatField(default=0.0, help_text="Средняя оценка тура")
     price_list = models.TextField(help_text="Цены тура", null=True)
     price = models.IntegerField(help_text="Цена в тенге", default=1, null=True)
+    is_top = models.BooleanField(help_text="Горящие тур или нет", default=True, null=True)
 
     def __str__(self):
         return self.title

@@ -13,4 +13,8 @@ export class TourService {
   getList(params: any = {}): Observable<TourApiResponse>{
     return this.client.get<TourApiResponse>(`${this.BASE_URL}/api/tours/`, { params })
   }
+
+  getTopList(): Observable<Tour[]>{
+    return this.client.get<Tour[]>(`${this.BASE_URL}/api/top-tours/`)
+  }
 }
