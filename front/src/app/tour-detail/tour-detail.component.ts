@@ -11,6 +11,7 @@ import { FilePreviewPipe } from '../pipes/file-preview.pipe';
 import {AuthService} from '../Service/auth.service';
 import {routes} from '../app.routes';
 import {range} from 'rxjs';
+import {CartService} from '../Service/CartService';
 
 @Component({
   selector: 'app-tour-detail',
@@ -78,31 +79,32 @@ export class TourDetailComponent implements OnInit{
       formData.append('images', file);
     });
 
-    if (this.authService.isAuthenticated()) {
-      alert("updated")
-      if (this.UserReview !== null){
-        this.reviewService.updateReview(formData, this.tourId || "1", this.UserReview.id.toString()).subscribe(
-          () => {
-            alert('Отзыв отправлен!');
-            this.isModalFormReview = false;
-          },
-          (error) => {
-            console.error('Ошибка отправки отзыва:', error);
-          }
-        );
-      }
+    if (this.authService.isAuthenticated() && this.UserReview !== null) {
+      alert('updated')
+      this.reviewService.updateReview(formData, this.tourId || "1", this.UserReview.id.toString()).subscribe(
+        () => {
+          alert('Отзыв отправлен!');
+          this.isModalFormReview = false;
+        },
+        (error) => {
+          console.error('Ошибка отправки отзыва:', error);
+        }
+      );
       return;
     }
+    else {
+      alert('posted')
 
-    this.reviewService.postReview(formData, this.tourId || "1").subscribe(
-      () => {
-        alert('Отзыв отправлен!');
-        this.isModalFormReview = false;
-      },
-      (error) => {
-        console.error('Ошибка отправки отзыва:', error);
-      }
-    );
+      this.reviewService.postReview(formData, this.tourId || "1").subscribe(
+        () => {
+          alert('Отзыв отправлен!');
+          this.isModalFormReview = false;
+        },
+        (error) => {
+          console.error('Ошибка отправки отзыва:', error);
+        }
+      );
+    }
   }
 
   toggleShowAll() {
@@ -124,7 +126,8 @@ export class TourDetailComponent implements OnInit{
     private tourReviewsService: TourReviewsService,
     private fb: FormBuilder, private reviewService: TourReviewsService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cartService: CartService
   ) {
     this.isAuth = !this.authService.isAuthenticated();
     this.reviewForm = this.fb.group({
@@ -287,5 +290,21 @@ export class TourDetailComponent implements OnInit{
 
   getStarArray(star: number) {
     return Array(star).fill(0);
+  }
+
+  addToCart() {
+    if (!this.tour) {
+      alert("Tour is undefined!");
+      return;
+    }
+    this.cartService.addToCart(this.tour.id, 1).subscribe({
+      next: (item) => {
+        console.log("Added to cart:", item)
+        this.router.navigate(['/cart']).then(() => {
+          window.location.reload();
+        });
+      },
+      error: (err) => console.error("Error adding to cart:", err)
+    });
   }
 }

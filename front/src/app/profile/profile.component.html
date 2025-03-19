@@ -1,9 +1,9 @@
 <body>
 
 <div class="profile-container">
-  <button class="logout-btn" (click)="logout()">logout</button>
+  <button class="logout-btn" (click)="logout()">{{ 'LOGOUT' | translate }}</button>
   <div class="cover-photo">
-    <img class="cover_img" [src]="userProfile.cover_photo" alt="">
+    <img class="cover_img" [src]="userProfile.cover_photo || 'assets/slide1.jpg'" alt="">
     <button class="upload-cover-btn" (click)="setActiveTab('settings')">
       <img src="assets/apple-camera.png" alt="">
       <span>{{ 'UPLOAD_COVER_PHOTO' | translate }}</span>
@@ -11,9 +11,9 @@
   </div>
 
   <div class="profile-info">
-    <img [src]="userProfile.profile_pic" alt="Profile Picture" class="profile-pic">
+    <img [src]="userProfile.profile_pic || 'assets/profile.avif'" alt="Profile Picture" class="profile-pic">
     <div class="details">
-      <h2>{{user().username}} {{userProfile.full_name}} <span class="edit-icon">✏️</span></h2>
+      <h2>{{ userProfile.full_name || user().username}}<span (click)="setActiveTab('settings')" class="edit-icon">✏️</span></h2>
       <p class="location">{{userProfile.location_profile}}</p>
       <p class="points">🏅 {{ UserPoint }} {{ 'POINTS' | translate }} <span class="info-icon" (click)="isModalOpen = true">{{ 'INFO' | translate }}</span></p>
     </div>
@@ -77,21 +77,21 @@
             <th>Status</th>
             <th>{{ 'CART.PRICE_PER_PERSON' | translate }}</th>
             <th>{{ 'CART.TOTAL' | translate }}</th>
-            <th>Created At</th>
+            <th>{{ 'CART.CREATED' | translate }}</th>
           </tr>
           </thead>
           <tbody>
           <tr *ngFor="let item of BookingTours">
             <td class="tour-info">
-              <img [src]="'http://127.0.0.1:8000/' + item.tour.cover_image" alt="Mo National">
+              <img [src]="'http://127.0.0.1:8000' + item.tour.cover_image" alt="Mo National">
               <span>{{ item.tour.title }}</span>
             </td>
             <td>{{item.tour.duration}}</td>
             <td>
-              <span class="qty">{{item.status}}</span>
+              <span class="qty">{{item.status | translate}}</span>
             </td>
-            <td>$3994</td>
-            <td>$98429</td>
+            <td>₸{{item.tour.price}}</td>
+            <td>₸{{item.tour.price}}</td>
             <td>{{item.created_at|date:"d.m.Y H:00"}}</td>
           </tr>
           </tbody>
@@ -103,28 +103,28 @@
     </div>
     <div *ngIf="selectedTab === 'settings'" class="settings-container">
       <form *ngIf="!isLoading" [formGroup]="profileForm" (ngSubmit)="updateProfile()" class="profile-form">
-        <label for="full_name">Full Name</label>
+        <label for="full_name">{{ 'PROFILE_SETTINGS.NAME' | translate }}</label>
         <input id="full_name" formControlName="full_name" type="text" class="input" />
         <div *ngIf="profileForm.get('full_name')?.invalid && profileForm.get('full_name')?.touched" class="error">
-          Full name is required (min 3 characters).
+          {{ 'PROFILE_SETTINGS.REQUIREMENTS' | translate }}
         </div>
 
-        <label for="location_profile">Location</label>
+        <label for="location_profile">{{ 'PROFILE_SETTINGS.LOCATION' | translate }}</label>
         <textarea id="location_profile" formControlName="location_profile" class="textarea"></textarea>
 
         <div class="file-input">
-          <label for="profile_pic">📷 Upload Profile Picture</label>
+          <label for="profile_pic">📷 {{ 'PROFILE_SETTINGS.PHOTO' | translate }}</label>
           <input id="profile_pic" type="file" (change)="onFileChange($event, 'profile_pic')" />
           <img *ngIf="profilePicPreview" [src]="profilePicPreview" class="file-preview"  alt=""/>
         </div>
 
         <div class="file-input">
-          <label for="cover_photo">🌄 Upload Cover Photo</label>
+          <label for="cover_photo">🌄 {{ 'PROFILE_SETTINGS.COVER_PHOTO' | translate }}</label>
           <input id="cover_photo" type="file" (change)="onFileChange($event, 'cover_photo')" />
           <img *ngIf="coverPhotoPreview" [src]="coverPhotoPreview" class="file-preview"  alt=""/>
         </div>
 
-        <button type="submit" [disabled]="profileForm.invalid" class="submit-btn">Update Profile</button>
+        <button type="submit" [disabled]="profileForm.invalid" class="submit-btn">{{ 'PROFILE_SETTINGS.UPDATE' | translate }}</button>
       </form>
     </div>
   </div>

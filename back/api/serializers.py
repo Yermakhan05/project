@@ -1,8 +1,9 @@
 from django.contrib.auth.models import User
 
-from .models import Tour, Country, Review, Booking, ReviewImage, UserForm
+from .models import Tour, Country, Review, Booking, ReviewImage, UserForm, Cart
 from rest_framework import serializers
 from .models import UserProfile
+from django.db import transaction
 
 
 class TourSerializer(serializers.ModelSerializer):
@@ -107,14 +108,6 @@ class UserProfileSerializer_2(serializers.ModelSerializer):
         fields = ['location_profile', 'full_name', 'cover_photo', 'profile_pic']
 
 
-class BookingSerializer(serializers.ModelSerializer):
-    tour = TourSerializer()
-
-    class Meta:
-        model = Booking
-        fields = ['id', 'tour', 'status', 'created_at']
-
-
 class ReviewSerializer2(serializers.ModelSerializer):
     tour = TourSerializer()
     review_images = serializers.SerializerMethodField()
@@ -136,19 +129,20 @@ class ReviewImageSerializer(serializers.ModelSerializer):
         fields = ["image"]
 
 class ReviewSerializer3(serializers.ModelSerializer):
-    images = ReviewImageSerializer(many=True, required=False)
 
     class Meta:
         model = Review
-        fields = ["tour", "user", "text", "images", "star"]
+        fields = ["tour", "user", "text", "star"]
 
     def create(self, validated_data):
-        images_data = self.context["request"].FILES.getlist("images")
-        validated_data.pop("images", None)
-        review = Review.objects.create(**validated_data)
+        request = self.context.get("request")
+        images_data = request.FILES.getlist("images") if request else []
+        validated_data.pop("images", None)  # Убираем, так как Review не хранит это поле
 
-        for image in images_data:
-            ReviewImage.objects.create(review=review, image=image)
+        with transaction.atomic():
+            review = Review.objects.create(**validated_data)
+            images = [ReviewImage(review=review, image=image) for image in images_data]
+            ReviewImage.objects.bulk_create(images)
 
         return review
 
@@ -157,3 +151,41 @@ class UserFormSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserForm
         fields = ['name', 'email', 'phone', 'comment']
+
+
+class CartSerializer(serializers.ModelSerializer):
+    tour = TourSerializer(read_only=True)  # Отображаем полный объект тура, но не ожидаем его в POST
+
+    class Meta:
+        model = Cart
+        fields = ['id', 'user', 'tour', 'quantity', 'added_at']
+        read_only_fields = ['user', 'added_at']
+
+    def create(self, validated_data):
+        request = self.context.get('request')  # Получаем пользователя из запроса
+        tour_id = self.initial_data.get('tour')  # Получаем tourId из запроса
+
+        if not tour_id:
+            raise serializers.ValidationError({"tour": "This field is required."})
+
+        try:
+            tour = Tour.objects.get(id=tour_id)  # Ищем тур по ID
+        except Tour.DoesNotExist:
+            raise serializers.ValidationError({"tour": "Tour not found."})
+
+        return Cart.objects.create(user=request.user, tour=tour, quantity=validated_data['quantity'])
+
+    def update(self, instance, validated_data):
+        """ Обновление количества товара в корзине """
+        instance.quantity = validated_data.get('quantity', instance.quantity)  # Обновляем quantity
+        instance.save()
+        return instance
+
+
+class BookingSerializer(serializers.ModelSerializer):
+    tour = TourSerializer(read_only=True)
+
+    class Meta:
+        model = Booking
+        fields = ['id', 'user', 'tour', 'status', 'created_at']
+        read_only_fields = ['user', 'status', 'created_at']

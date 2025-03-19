@@ -13,6 +13,12 @@ import os
 from pathlib import Path
 import environ
 from django.utils.translation import gettext_lazy as _
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+)
 
 LANGUAGE_CODE = 'ru'  # Язык по умолчанию
 

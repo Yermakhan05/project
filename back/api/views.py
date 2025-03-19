@@ -1,3 +1,4 @@
+import json
 import uuid
 
 import django_filters
@@ -9,12 +10,12 @@ from django.http import JsonResponse
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 
-from .models import Payment, Booking, Country
+from .models import Payment, Booking, Country, Cart
 from rest_framework import viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
 from .serializers import TourSerializer, CountrySerializer, TourDetailSerializer, \
-    UserProfileSerializer_2, BookingSerializer, ReviewSerializer2, UserFormSerializer
+    UserProfileSerializer_2, BookingSerializer, ReviewSerializer2, UserFormSerializer, CartSerializer
 from django.utils.translation import activate
 from django.contrib.auth import authenticate
 from .serializers import UserSerializer
@@ -22,17 +23,48 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
 from .models import UserProfile
 from .serializers import UserProfileSerializer
-from rest_framework import generics, status, permissions
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status, permissions, generics
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
-from .models import Tour, Review, ReviewImage
+from rest_framework.generics import get_object_or_404
+from rest_framework.exceptions import NotFound
+from .models import Review, ReviewImage, Tour
 from .serializers import ReviewSerializer, ReviewSerializer3
 
 
-class UserProfileUpdateView(generics.UpdateAPIView):
+class UpdateProfileAPIView(generics.UpdateAPIView):
     serializer_class = UserProfileSerializer_2
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                name="cover_photo",
+                in_=openapi.IN_FORM,
+                type=openapi.TYPE_FILE,
+                description="Фото обложки профиля",
+                required=False
+            ),
+            openapi.Parameter(
+                name="profile_pic",
+                in_=openapi.IN_FORM,
+                type=openapi.TYPE_FILE,
+                description="Аватар пользователя",
+                required=False
+            ),
+        ],
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                "location_profile": openapi.Schema(type=openapi.TYPE_STRING, description="Местоположение"),
+                "full_name": openapi.Schema(type=openapi.TYPE_STRING, description="Полное имя"),
+            },
+        ),
+        responses={200: UserProfileSerializer_2()},
+    )
 
     def get_object(self):
         return self.request.user.profile
@@ -124,8 +156,7 @@ class TourReviewsAPIView(generics.ListCreateAPIView):
     parser_classes = (MultiPartParser, FormParser)
 
     def get_permissions(self):
-        """Доступ к POST и PUT только для авторизованных пользователей"""
-        if self.request.method in ["POST"]:
+        if self.request.method == "POST":
             return [permissions.IsAuthenticated()]
         return []
 
@@ -136,20 +167,41 @@ class TourReviewsAPIView(generics.ListCreateAPIView):
         return Review.objects.filter(tour_id=tour_id)
 
     def get_serializer_class(self):
-        if self.request.method in ["POST"]:
+        if self.request.method == "POST":
             return ReviewSerializer3
         return ReviewSerializer
 
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                name="images",
+                in_=openapi.IN_FORM,
+                type=openapi.TYPE_ARRAY,
+                items=openapi.Items(type=openapi.TYPE_FILE),
+                description="Список изображений",
+            ),
+        ],
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=["tour", "text", "star"],
+            properties={
+                "tour": openapi.Schema(type=openapi.TYPE_INTEGER, description="ID тура"),
+                "text": openapi.Schema(type=openapi.TYPE_STRING, description="Текст отзыва"),
+                "star": openapi.Schema(type=openapi.TYPE_INTEGER, description="Рейтинг от 1 до 5"),
+            },
+        ),
+        responses={201: ReviewSerializer3()},
+    )
     def create(self, request, *args, **kwargs):
-        tour_id = self.kwargs.get('tour_id')
+        tour_id = self.kwargs.get("tour_id")
         try:
             tour = Tour.objects.get(id=tour_id)
         except Tour.DoesNotExist:
             raise NotFound("Тур не найден")
 
-        data = request.data.copy()
-        data['tour'] = tour_id
-        data['user'] = request.user.id
+        data = request.data.dict()
+        data["tour"] = tour_id
+        data["user"] = request.user.id
 
         serializer = self.get_serializer(data=data, context={"request": request})
         serializer.is_valid(raise_exception=True)
@@ -159,7 +211,6 @@ class TourReviewsAPIView(generics.ListCreateAPIView):
 
 
 class ReviewUpdateAPIView(generics.UpdateAPIView):
-    """Обновление отзыва"""
     parser_classes = (MultiPartParser, FormParser)
     permission_classes = [permissions.IsAuthenticated]
 
@@ -169,6 +220,26 @@ class ReviewUpdateAPIView(generics.UpdateAPIView):
     def get_serializer_class(self):
         return ReviewSerializer3
 
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                name="images",
+                in_=openapi.IN_FORM,  # 📌 Указываем `IN_FORM`
+                type=openapi.TYPE_ARRAY,
+                items=openapi.Items(type=openapi.TYPE_FILE),
+                description="Список новых изображений (старые изображения удаляются)",
+            ),
+        ],
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=["text", "star"],
+            properties={
+                "text": openapi.Schema(type=openapi.TYPE_STRING, description="Обновленный текст отзыва"),
+                "star": openapi.Schema(type=openapi.TYPE_INTEGER, description="Обновленный рейтинг"),
+            },
+        ),
+        responses={200: ReviewSerializer3()},
+    )
     def update(self, request, *args, **kwargs):
         review = get_object_or_404(Review, id=kwargs["review_id"], user=request.user)
 
@@ -176,7 +247,7 @@ class ReviewUpdateAPIView(generics.UpdateAPIView):
         review.review_images.all().delete()
 
         # Копируем данные из запроса
-        data = request.data.copy()
+        data = request.data.dict()
 
         # Обрабатываем сериализатор
         serializer = self.get_serializer(review, data=data, partial=True, context={"request": request})
@@ -299,3 +370,60 @@ def check_payment_status(request, payment_id):
         return JsonResponse({"status": status})
 
     return JsonResponse({"error": "Ошибка при получении статуса"}, status=400)
+
+
+class CartListCreateAPIView(generics.ListCreateAPIView):
+    """
+    Получение содержимого корзины и добавление тура в корзину
+    """
+    serializer_class = CartSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Cart.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class CartUpdateDeleteAPIView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Обновление количества или удаление тура из корзины
+    """
+    serializer_class = CartSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Cart.objects.filter(user=self.request.user)
+
+    def update(self, request, *args, **kwargs):
+        print("Received data:", json.dumps(request.data, indent=4))
+        return super().update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        cart_item = self.get_object()
+        cart_item.delete()
+        return Response({"message": "Тур удален из корзины"}, status=status.HTTP_204_NO_CONTENT)
+
+
+class CheckoutAPIView(generics.CreateAPIView):
+    """
+    Оформление бронирования (создание Booking из Cart)
+    """
+    serializer_class = BookingSerializer
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        cart_items = Cart.objects.filter(user=request.user)
+
+        if not cart_items.exists():
+            return Response({"error": "Корзина пуста"}, status=status.HTTP_400_BAD_REQUEST)
+
+        bookings = []
+        for item in cart_items:
+            booking = Booking.objects.create(user=request.user, tour=item.tour, status="pending")
+            bookings.append(booking)
+
+        cart_items.delete()  # Очистка корзины после оформления заказа
+        return Response({"message": "Бронирование создано", "bookings": BookingSerializer(bookings, many=True).data},
+                        status=status.HTTP_201_CREATED)

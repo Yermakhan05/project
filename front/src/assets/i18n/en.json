@@ -92,7 +92,7 @@
   },
   "tour": {
     "title": "The Mysterious East",
-    "rating": "4.4 (Read 9K+ reviews & photos)",
+    "rating": " (reviews & photos)",
     "address": "Jl. Kapten Harun Kabir, Cibeureum, Bogor Regency, West Java, Indonesia",
     "open_hours": "Open • Saturday • 08:30 - 17:00",
     "description": "Bogor Safari Park is a children's tourist destination that is suitable for playing while learning. Here, you and your little ones will see amazing animals, such as orangutans or white tigers up close. No need to worry, your interactions with wild and rare animals at Safari Park are guaranteed to be safe!",
@@ -197,7 +197,21 @@
     "APPLY_COUPON": "Apply",
     "TOTAL_QUANTITY": "Total Quantity",
     "GRAND_TOTAL": "Grand Total",
-    "CHECKOUT": "Checkout"
+    "CHECKOUT": "Checkout",
+    "CREATED": "Created at"
   },
-  "DAY": "days"
+  "DAY": "days",
+  "LOGOUT": "Logout",
+  "PROFILE_SETTINGS": {
+    "NAME": "Full Name",
+    "LOCATION": "Location",
+    "PHOTO": "Upload Profile Picture",
+    "COVER_PHOTO": "Upload Cover Photo",
+    "REQUIREMENTS": "Full name is required (min 3 characters).",
+    "UPDATE": "Update Profile"
+  },
+  "pending": "pending",
+  "confirmed": "confirmed",
+  "cancelled": "cancelled",
+  "MORE": "More"
 }

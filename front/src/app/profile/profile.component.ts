@@ -114,11 +114,11 @@ export class ProfileComponent implements OnInit{
       error: (err) => console.error('Ошибка загрузки тура:', err)
     })
     this.profileService.getUserBookingHistory().subscribe(
-      data => {
-        this.BookingTours = data;  // Сохраняем данные бронирований
-        this.countVisitedCountries();  // Вызываем метод после обновления данных
+      (data) => {
+        this.BookingTours = data;
+        this.countVisitedCountries();
       },
-      err => console.error('Failed to fetch user data', err)
+     (err) => console.error('Failed to fetch user data', err)
     );
     this.isLoading = false;
   }

@@ -16,8 +16,8 @@
       <tbody>
       <tr *ngFor="let item of cartItems">
         <td class="tour-info">
-          <img [src]="item.images[0].url" [alt]="item.name">
-          <span>{{ item.name }}</span>
+          <img [src]="item.tour.cover_image" alt="">
+          <span style="max-width: 150px">{{ item.tour.title }}</span>
         </td>
         <td>22.01.2025</td>
         <td>
@@ -25,8 +25,8 @@
           <span class="qty">{{ item.quantity }}</span>
           <button class="qty-btn" (click)="increaseQuantity(item)">+</button>
         </td>
-        <td>${{ item.price }}</td>
-        <td>${{ item.quantity * item.price }}</td>
+        <td>₸{{ item.tour.price }}</td>
+        <td>₸{{ item.quantity * item.tour.price }}</td>
         <td><button class="remove-btn" (click)="removeFromCart(item.id)">✖</button></td>
       </tr>
       </tbody>
@@ -44,7 +44,7 @@
     </div>
     <div class="total">
       <p>{{ 'CART.TOTAL_QUANTITY' | translate }}: <span style="font-weight: bold">{{ overallQuantity }}</span></p>
-      <p>{{ 'CART.GRAND_TOTAL' | translate }}: <span style="font-weight: bold">${{ grandTotal }}</span></p>
+      <p>{{ 'CART.GRAND_TOTAL' | translate }}: <span style="font-weight: bold">₸{{ grandTotal }}</span></p>
       <div class="line-after"></div>
       <button class="checkout-btn" (click)="buyItems()">{{ 'CART.CHECKOUT' | translate }}</button>
     </div>

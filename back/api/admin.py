@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Country, City, Tour, TourImage, UserProfile, Review, ReviewImage, Booking
+from .models import Country, City, Tour, TourImage, UserProfile, Review, ReviewImage, Booking, Cart
 
 
 # Inline для изображений тура
@@ -76,3 +76,8 @@ class ReviewImageAdmin(admin.ModelAdmin):
 @admin.register(Booking)
 class BookingsAdmin(admin.ModelAdmin):
     list_display = ('id', 'status', 'created_at')
+
+
+@admin.register(Cart)
+class CartAdmin(admin.ModelAdmin):
+    list_display = ('id', 'tour', 'quantity')

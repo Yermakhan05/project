@@ -81,7 +81,6 @@ export class ToursComponent implements OnInit{
 
     if (this.selectedCountryId !== null) {
       if (this.selectedCountryId == 0){
-        params.country = null;
       }
       else {
         params.country = this.selectedCountryId;

@@ -19,10 +19,22 @@
 
         <div class="filter">
           <button class="dropdown-btn">{{ 'tours.filters.city' | translate }} ▼</button>
-          <p class="selected-value">{{ selectedCountry }}</p>
+          <p class="selected-value">
+            <span *ngIf="selectedCountry == 'All'; else showSelectedCountry">
+                {{ 'tours.locations.0' | translate }}
+              </span>
+            <ng-template #showSelectedCountry>
+              <span>{{ selectedCountry }}</span>
+            </ng-template>
+          </p>
           <ul class="dropdown-menu">
-            <li *ngFor="let country of countries" (click)="filterByCountry(country.id)">
-              {{ country.name }}
+            <li *ngFor="let country of countries; let i = index" (click)="filterByCountry(country.id)">
+              <span *ngIf="i == 0; else showCountry">
+                {{ 'tours.locations.' + i | translate }}
+              </span>
+              <ng-template #showCountry>
+                <span>{{ country.name }}</span>
+              </ng-template>
             </li>
           </ul>
         </div>
@@ -30,7 +42,7 @@
 
         <div class="filter">
           <button class="dropdown-btn">{{ 'tours.filters.durations' | translate }} ▼</button>
-          <p class="selected-value">{{ selectedDuration }}день</p>
+          <p class="selected-value">{{ selectedDuration }}{{ 'DAY' | translate }}</p>
           <ul class="dropdown-menu">
             <li (click)="filterByDuration('1-6')">{{ 'tours.durations.0' | translate }}</li>
             <li (click)="filterByDuration('7-14')">{{ 'tours.durations.1' | translate }}</li>

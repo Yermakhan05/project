@@ -1,7 +1,8 @@
 from django.urls import path
 from .views import create_payment, check_payment_status, TourViewSet, CountryViewSet, TourDetailView, \
-    TourReviewsAPIView, RegisterView, LoginView, UserProfileView, LogoutView, UserProfileView_2, UserProfileUpdateView, \
-    UserBookingHistoryView, UserReviewView, ReviewUpdateAPIView, UserFormCreateView, TopTourViewSet
+    TourReviewsAPIView, RegisterView, LoginView, UserProfileView, LogoutView, UserProfileView_2, \
+    UserBookingHistoryView, UserReviewView, ReviewUpdateAPIView, UserFormCreateView, TopTourViewSet, \
+    UpdateProfileAPIView, CartListCreateAPIView, CartUpdateDeleteAPIView, CheckoutAPIView
 
 urlpatterns = [
     path('tours/', TourViewSet.as_view({'get': 'list'}), name='tour-list'),
@@ -11,7 +12,7 @@ urlpatterns = [
     path('profile/', UserProfileView.as_view(), name='user-profile'),
 
     path('user-profile/', UserProfileView_2.as_view(), name='user-profile'),
-    path('profile/update/', UserProfileUpdateView.as_view(), name='profile-update'),
+    path('profile/update/', UpdateProfileAPIView.as_view(), name='profile-update'),
 
     path('user-booking-history/', UserBookingHistoryView.as_view(), name='user-booking-history'),
 
@@ -28,6 +29,10 @@ urlpatterns = [
     path("login/", LoginView.as_view(), name="login"),
 
     path('countries/', CountryViewSet.as_view({'get': 'list'}), name='countries-list'),
+
+    path('cart/', CartListCreateAPIView.as_view(), name='cart-list-create'),
+    path('cart/<int:pk>/', CartUpdateDeleteAPIView.as_view(), name='cart-update-delete'),
+    path('cart/checkout/', CheckoutAPIView.as_view(), name='cart-checkout'),
     path('pay/<int:booking_id>/', create_payment, name='create_payment'),
     path('pay/status/<uuid:payment_id>/', check_payment_status, name='check_payment_status'),
 

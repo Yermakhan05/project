@@ -57,7 +57,7 @@
       <div class="light2"></div>
       <div class="carousel-wrapper" #carousel>
         <div class="carousel">
-          <div class="card-tour" *ngFor="let tour of Tours; let i = index">
+          <div class="card-tour" *ngFor="let tour of Tours; let i = index" routerLink="/tour/{{tour.id}}">
             <div class="card">
               <img [src]="tour.cover_image" alt="Monumen National" class="cover-image">
               <div class="card-content">
@@ -111,7 +111,7 @@
           </div>
           <p>
             {{ review.reviewText | truncate:12 }}
-            <span *ngIf="review.reviewText.split(' ').length > 12" (click)="openFullText(review.reviewText)" class="more">Еще</span>
+            <span *ngIf="review.reviewText.split(' ').length > 12" (click)="openFullText(review.reviewText)" class="more">{{'MORE'|translate}}</span>
           </p>
         </div>
       </div>

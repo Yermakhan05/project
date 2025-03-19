@@ -33,7 +33,7 @@
           <ng-container *ngFor="let star of getListRatingStar(tour.rating)">
             <img [src]="star" alt="Star" class="stars">
           </ng-container>
-          <span class="rating-text">{{ 'tour.rating' | translate: {rating: tour.rating.toFixed(1), reviews: '9RB+'} }}</span>
+          <span class="rating-text">{{ tour.rating.toFixed(1) }} {{'tour.rating' | translate}}</span>
         </div>
 
         <div class="info">
@@ -57,7 +57,7 @@
           <span class="price-label">{{ 'price.start_from' | translate }}</span>
           <span class="price">{{ t.price_list }}</span>
         </div>
-        <button class="ticket-button" routerLink="/{{isAuthUser()}}">{{ 'price.see_ticket' | translate }}</button>
+        <button class="ticket-button" (click)="addToCart()">{{ 'price.see_ticket' | translate }}</button>
       </div>
     </div>
 
@@ -179,7 +179,13 @@
                 <h3 class="user-name">{{user().username.toUpperCase()}}</h3>
               </div>
             </div>
-            <span class="review-date">{{ UserReview?.date|date:"d.m.Y H:00" }}</span>
+            <div>
+              <span class="review-date">{{ UserReview?.date|date:"d.m.Y H:00" }}</span>
+              <div style="display: flex; margin-top: 10px">
+                <img style="width: 20px" src="assets/img_5.png" alt="star" *ngFor="let x of getStarArray((UserReview?.star||5) - 0)">
+                <img style="width: 20px; margin-bottom: -2px" src="assets/img_10.png" alt="star" *ngFor="let x of getStarArray(5 -(UserReview?.star || 5))">
+              </div>
+            </div>
           </div>
 
           <div class="review-content">
@@ -191,11 +197,6 @@
 
           <div class="review-images">
             <img *ngFor="let i of UserReview?.review_images" [src]="i" alt="Review Image 1">
-          </div>
-
-          <div class="review-feedback">
-            <span>Helpful</span>
-            <span>Not helpful</span>
           </div>
         </div>
     </div>
@@ -226,11 +227,6 @@
 
       <div class="review-images">
         <img *ngFor="let i of r.review_images" [src]="i" alt="Review Image 1">
-      </div>
-
-      <div class="review-feedback">
-        <span>Helpful</span>
-        <span>Not helpful</span>
       </div>
     </div>
   </div>
