@@ -74,6 +74,7 @@ This is a web application built using [Django](https://www.djangoproject.com/) w
 ### **1️⃣ Clone the Repository**
 ```bash
 cd back
+```
 
 2️⃣ Set Up a Virtual Environment
 
@@ -83,15 +84,17 @@ It is recommended to use a virtual environment to manage dependencies:
 python -m venv venv
 source venv/bin/activate  # macOS/Linux
 venv\Scripts\activate     # Windows
+```
 
 
 3️⃣ Install Dependencies
 ```bash
 pip install -r requirements.txt
-
+```
 
 🖥️ Running the Development Server
 
 To start the Django development server, run:
 ```bash
 python manage.py runserver
+```
